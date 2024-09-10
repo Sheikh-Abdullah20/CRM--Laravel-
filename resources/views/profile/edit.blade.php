@@ -18,20 +18,30 @@ CRM - Profile
               <h5 class="title">Edit Profile</h5>
             </div>
             <div class="card-body">
-              <form>
+              <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method("PATCH")
                 <div class="row">
-                  <div class="col-md-5 pr-md-1">
+                  <div class="col-md-4 pr-md-1">
                     <div class="form-group">
                       <label>Company</label>
-                      <input type="text" class="form-control"  placeholder="Company" value="{{ $user->company }}">
+                      <input type="text" class="form-control" name="company"  placeholder="Company" value="{{ $user->company }}">
+                      @error('company')
+                        <span class="text-danger">
+                          {{ $message }}
+                        </span>
+                      @enderror
                     </div>
                   </div>
-                  <div class="col-md-3 px-md-1">
-                  </div>
-                  <div class="col-md-4 pl-md-1">
+                  <div class="col-md-8 ">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" placeholder="Email" value="{{ $user->email }}">
+                      <input type="email" class="form-control" placeholder="Email" name="email" value="{{ $user->email }}">
+                      @error('email')
+                        <span class="text-danger">
+                          {{ $message }}
+                        </span>
+                      @enderror
                     </div>
                   </div>
                 </div>
@@ -39,13 +49,18 @@ CRM - Profile
                   <div class="col-md-6 pr-md-1">
                     <div class="form-group">
                       <label>First Name</label>
-                      <input type="text" class="form-control" placeholder="Company" value="{{ $user->first_name }}">
+                      <input type="text" class="form-control" name="first_name" placeholder="First Name" value="{{ $user->first_name }}">
                     </div>
                   </div>
                   <div class="col-md-6 pl-md-1">
                     <div class="form-group">
                       <label>Last Name</label>
-                      <input type="text" class="form-control" placeholder="Last Name" value="{{ $user->last_name }}">
+                      <input type="text" class="form-control" name="last_name" placeholder="Last Name" value="{{ $user->last_name }}">
+                      @error('last_name')
+                        <span class="text-danger">
+                          {{ $message }}
+                        </span>
+                      @enderror
                     </div>
                   </div>
                 </div>
@@ -53,7 +68,12 @@ CRM - Profile
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Address</label>
-                      <input type="text" class="form-control" placeholder="Home Address" value="{{ $user->address }}">
+                      <input type="text" class="form-control" name="address" placeholder="Home Address" value="{{ $user->address }}">
+                      @error('address')
+                      <span class="text-danger">
+                        {{ $message }}
+                      </span>
+                    @enderror
                     </div>
                   </div>
                 </div>
@@ -61,13 +81,23 @@ CRM - Profile
                   <div class="col-md-4 pr-md-1">
                     <div class="form-group">
                       <label>City</label>
-                      <input type="text" class="form-control" placeholder="City" value="{{ $user->city }}">
+                      <input type="text" class="form-control" name="city" placeholder="City" value="{{ $user->city }}">
+                      @error('city')
+                        <span class="text-danger">
+                          {{ $message }}
+                        </span>
+                      @enderror
                     </div>
                   </div>
                   <div class="col-md-4 px-md-1">
                     <div class="form-group">
                       <label>Country</label>
-                      <input type="text" class="form-control" placeholder="Country" value="{{ $user->country }}">
+                      <input type="text" class="form-control" name="country" placeholder="Country" value="{{ $user->country }}">
+                      @error('country')
+                        <span class="text-danger">
+                          {{ $message }}
+                        </span>
+                      @enderror
                     </div>
                   </div>
                 </div>
@@ -75,15 +105,21 @@ CRM - Profile
                   <div class="col-md-8">
                     <div class="form-group">
                       <label>About Me</label>
-                      <textarea rows="4" cols="80" class="form-control" placeholder="About You" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
+                      <textarea rows="4" cols="80" name="about" class="form-control" placeholder="About You">{{ $user->profile->about  ?? ''}}</textarea>
                     </div>
                   </div>
                 </div>
-              </form>
+                
+                {{-- Hidden File Input --}}
+                <input type="file" onchange="document.getElementById('preview').src= window.URL.createObjectURL(this.files[0])" hidden class="form-control" name="image" id="file">
+                {{-- Hidden File Input --}}
+
+
             </div>
             <div class="card-footer">
               <button type="submit" class="btn btn-fill btn-primary">Save Changes</button>
             </div>
+          </form>
           </div>
     </div>
 
@@ -98,16 +134,21 @@ CRM - Profile
                 <div class="block block-three"></div>
                 <div class="block block-four"></div>
                 <a>
-                  <img class="avatar" src="../assets/img/emilyz.jpg" alt="...">
-                  <h5 class="title">Mike Andrew</h5>
+                  <img class="avatar" id="preview" src="{{ "storage/user_profile/" . $user->profile->profile }}" alt="...">
+                  @if(!empty($user->profile->profile))
+                  <button class="btn btn-fill btn-primary mb-3" id="upload">Change Profile</button>
+                  @else
+                  <button class="btn mb-3" id="upload">Upload Profile</button>
+                  @endif
+                  <h5 class="title">{{ $user->first_name .'  '. $user->last_name }}</h5>
                 </a>
                 <p class="description">
-                  Ceo/Co-Founder
+                  {{ $user->company }}
                 </p>
               </div>
             </p>
             <div class="card-description">
-              {{ $user->about }}
+              {{ $user->profile->about }}
             </div>
           </div>
 
@@ -115,4 +156,14 @@ CRM - Profile
       </div>
 
 </div>
+@endsection
+
+@section('scripts')
+
+<script>
+  document.getElementById('upload').addEventListener('click',function(){
+    document.getElementById('file').click();
+  });
+</script>
+
 @endsection

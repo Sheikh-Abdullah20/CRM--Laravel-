@@ -19,6 +19,7 @@
   <link href="{{ asset('assets/css/black-dashboard.css?v=1.0.0') }}" rel="stylesheet">
 
   <link href="{{ asset('assets/demo/demo.css') }}"  rel="stylesheet">
+  @yield('css')
 </head>
 
 <body class="">
@@ -343,6 +344,8 @@
         application: "black-dashboard-free"
       });
   </script>
+
+  @yield('scripts')
 </body>
 
 </html>

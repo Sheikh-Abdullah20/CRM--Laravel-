@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 class leadsController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
+        if($request->filled('lead_id')){
+            return $request->lead_id;
+        }
         $leads = Lead::all();
         return view('leads.index',compact('leads'));
     }

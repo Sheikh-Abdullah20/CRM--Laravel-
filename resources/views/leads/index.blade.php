@@ -14,6 +14,15 @@ CRM - Leads
 <div class="row mt-3">
     <div class="col-md-12">
         <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-end">
+                    <form id="leadIdForm"  action="{{ route('lead.index') }}" method="GET">
+                        @csrf
+                       <input type="hidden" name="lead_id" id="lead_id" value="">
+                       <a class="btn btn-danger btn-sm" id="button"> <i class="tim-icons icon-trash-simple"></i> </a>
+                    </form>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-full-width table-responsive">
                     <table class="table text-center">
@@ -42,7 +51,7 @@ CRM - Leads
                                 <td>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="{{ $lead->id }}">
+                                            <input class="form-check-input" name="checkbox" type="checkbox" value="{{ $lead->id }}">
                                             <span class="form-check-sign">
                                                 <span class="check"></span>
                                             </span>
@@ -84,4 +93,34 @@ CRM - Leads
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+
+<script>
+    document.getElementById('button').addEventListener('click',function(){
+        let checkboxes = document.querySelectorAll('input[name= checkbox]:checked');
+        
+        if(checkbox.length < 1){
+            alert('Please select Atleast One Lead')
+            return false;
+        }else{
+            let selectedIds = [];
+        checkboxes.forEach(function(checkbox) {
+            selectedIds.push(checkbox.value);
+        });
+
+        // Join all the selected IDs into a comma-separated string
+             leadInput.value = selectedIds.join(',');
+            let leadInput = document.getElementById('lead_id');
+            leadInput.value = selectedIds;
+            console.log(leadInput)
+            document.getElementById('leadIdForm').submit()
+
+        }
+    });
+   
+   
+</script>
+
 @endsection
