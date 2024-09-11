@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\Contact;
+use App\Models\Deal;
 use App\Models\Lead;
 use Illuminate\Http\Request;
 
@@ -11,7 +14,11 @@ class leadsController extends Controller
     public function index(Request $request)
     {
         if($request->filled('lead_id')){
-            return $request->lead_id;
+            $selectedIds = (string) $request->lead_id;
+            $ids_into_array = explode(",",$selectedIds);
+            $selected_leads = Lead::whereIn('id',$ids_into_array)->delete();
+            Toastr()->error('Selected Leads Has Been deleted successfully',[],"Deleted");
+          return redirect()->route('lead.index');
         }
         $leads = Lead::all();
         return view('leads.index',compact('leads'));
@@ -29,7 +36,7 @@ class leadsController extends Controller
        $request->validate([
         'first_name' => 'required',
         'last_name' => 'required',
-        'email' => 'required|email',
+        'email' => 'required|unique:leads,email',
         'phone' => 'required|numeric',
         'company' => 'required'
        ]);
@@ -38,6 +45,7 @@ class leadsController extends Controller
         'first_name' => $request->first_name,
         'last_name' => $request->last_name,
         'email' => $request->email,
+        'website' => $request->website,
         'phone' => $request->phone,
         'company' => $request->company,
        ]);
@@ -54,7 +62,8 @@ class leadsController extends Controller
    
     public function show(string $id)
     {
-        //
+        $lead = Lead::find($id);
+        return view('leads.show',compact('lead'));
     }
 
     public function edit(string $id)
@@ -71,7 +80,7 @@ class leadsController extends Controller
             $request->validate([
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'email' => 'required',
+                'email' => 'required|email',
                 'phone' => 'required|numeric',
                 'company' => 'required'
             ]);
@@ -80,6 +89,7 @@ class leadsController extends Controller
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
+                'website' => $request->website,
                 'phone' => $request->phone,
                 'company' => $request->company,
             ]);
@@ -93,6 +103,56 @@ class leadsController extends Controller
         }
     }
 
+
+    public function convert($id){
+        $lead = Lead::find($id);
+        return view('leads.convert',compact('lead'));
+    }
+
+
+    public function convertPost(Request $request,  $id){
+        $request->validate([
+            'deal_amount' => 'required|numeric',
+            'deal_name' => 'required|string',
+            'deal_date' => 'required|date',
+
+        ]);
+
+        $lead = Lead::find($id);
+ 
+        $account = Account::create([
+            'account_name' => $lead->company,
+            'account_email' => $lead->email,
+            'account_website' => $lead->website ?? null,
+            'account_phone' => $lead->phone,
+        ]);
+    
+        $contact = Contact::create([
+            'contact_name' => $lead->first_name .' '. $lead->last_name,
+            'contact_email' => $lead->email,
+            'contact_phone' => $lead->phone,
+            'account_id' => $account->id,
+        ]);
+
+
+      $deal =   Deal::create([
+            'deal_amount' => $request->deal_amount,
+            'deal_name' => $request->deal_name,
+            'deal_date' => $request->deal_date,
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        if($deal){
+            Toastr()->success("Deal Has Been Created Succesfully And Account , Contact Has Been Added ");
+            $lead->delete();
+            return redirect()->route('lead.index');
+        }else{
+            Toastr()->error("Error Occured While Converting Lead Please Try Again Later");
+            return redirect()->back();
+        }
+
+    }
    
     public function destroy(string $id)
     {

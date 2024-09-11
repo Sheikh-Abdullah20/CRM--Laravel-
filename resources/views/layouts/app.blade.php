@@ -13,8 +13,12 @@
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <link href="{{ asset('assets/css/toastr.css') }}" rel="stylesheet"/>
+
+
   <!-- Nucleo Icons -->
   <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
+  
   <!-- CSS Files -->
   <link href="{{ asset('assets/css/black-dashboard.css?v=1.0.0') }}" rel="stylesheet">
 
@@ -55,26 +59,29 @@
               <i class="tim-icons icon-pin"></i>
               <p>Maps</p>
             </a>
-          </li>
-          <li>
-            <a href="./notifications.html">
-              <i class="tim-icons icon-bell-55"></i>
-              <p>Notifications</p>
-            </a>
           </li> --}}
+          <li class="{{ request()->routeIs('account.index') ? 'active' : '' }}">
+            <a href="{{ route('account.index') }}">
+              <i class="tim-icons icon-badge"></i>
+              <p>Accounts</p>
+            </a>
+          </li>
+
+          <li class="{{ request()->routeIs('deal.index') ? 'active' : '' }}">
+            <a href="{{ route('deal.index') }}">
+              <i class="tim-icons icon-puzzle-10"></i>
+              <p>Deals</p>
+            </a>
+          </li>
+
             <li class="{{ request()->routeIs('profile.edit') ? 'active ' : '' }}">
             <a href="{{ route('profile.edit') }}">
               <i class="tim-icons icon-single-02"></i>
               <p>User Profile</p>
             </a>
           </li>
-          {{-- <li>
-            <a href="./tables.html">
-              <i class="tim-icons icon-puzzle-10"></i>
-              <p>Table List</p>
-            </a>
-          </li>
-          <li>
+          
+         {{-- <li>
             <a href="./typography.html">
               <i class="tim-icons icon-align-center"></i>
               <p>Typography</p>
@@ -135,7 +142,7 @@
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                   {{ Auth::user()->name }}
                   <div class="photo">
-                    <img src="../assets/img/anime3.png" alt="Profile Photo">
+                    <img src="{{ asset("storage/user_profile/".Auth::user()->profile->profile) }}" alt="Profile Photo">
                   </div>
                   <b class="caret d-none d-lg-block d-xl-block"></b>
                   <p class="d-lg-none">
@@ -177,7 +184,7 @@
      
     </div>
   </div>
-  <div class="fixed-plugin">
+  {{-- <div class="fixed-plugin">
     <div class="dropdown show-dropdown">
       <a href="#" data-toggle="dropdown">
         <i class="fa fa-cog fa-2x"> </i>
@@ -202,7 +209,7 @@
         </li>
       </ul>
     </div>
-  </div>
+  </div> --}}
   <!--   Core JS Files   -->
   <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
@@ -215,7 +222,7 @@
   <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
   <!--  Notifications Plugin    -->
   <script src="{{ asset('assets/js/plugins/bootstrap-notify.js') }}"></script>
-  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+
   <script src="{{ asset('assets/js/black-dashboard.min.js?v=1.0.0') }}"></script><!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="{{ asset('assets/demo/demo.js') }}"></script>
   <script>
@@ -336,15 +343,8 @@
 
     });
   </script>
-  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-  <script>
-    window.TrackJS &&
-      TrackJS.install({
-        token: "ee6fab19c5a04ac1a32a645abde4613a",
-        application: "black-dashboard-free"
-      });
-  </script>
 
+<script src="{{ asset('assets/js/toastr.js') }}"></script>
   @yield('scripts')
 </body>
 

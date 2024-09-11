@@ -1655,9 +1655,7 @@ pre code {
   border-bottom: 0.125rem solid #e3e3e3;
 }
 
-.table tbody+tbody {
-  border-top: 0.125rem solid #e3e3e3;
-}
+
 
 .table-sm th,
 .table-sm td {
@@ -17014,7 +17012,7 @@ table.tablesorter thead tr .headerSortDown {
   z-index: 1031;
   border-radius: 8px 0 0 8px;
   text-align: center;
-  top: 130px;
+  top: 90px;
 }
 
 .fixed-plugin li>a,
@@ -19056,7 +19054,6 @@ code {
 .form-control[readonly],
 fieldset[disabled] .form-control {
   background-color: #1d253b;
-  color: #344675;
   cursor: not-allowed;
 }
 

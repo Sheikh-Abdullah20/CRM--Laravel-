@@ -49,6 +49,11 @@ CRM - Lead Edit
                     </div>
 
                     <div class="form-group">
+                        <label for="Website">Website (Not Required)</label>
+                        <input type="text" class="form-control" placeholder="Enter Website " name="website" id="Website" value="{{ $lead->website }}">
+                    </div>
+
+                    <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" class="form-control" placeholder="Enter Phone" name="phone" id="phone" value="{{ $lead->phone}}">
                         @error('phone')
@@ -69,7 +74,8 @@ CRM - Lead Edit
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-fill btn-primary">Update Lead</button>
+                        <button type="submit" class="btn btn-fill btn-primary">  <i
+                            class="tim-icons icon-pencil mx-1"></i> Update Lead</button>
                     </div>
                 </form>
             </div>
