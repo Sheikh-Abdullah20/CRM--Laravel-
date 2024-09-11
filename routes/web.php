@@ -20,7 +20,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard',[AdminController::class , 'index'] )->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Resource Routes Starts
         // Leads Route Start
@@ -29,10 +28,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('/deal',DealController::class);
         // Leads Route End
 
-        // Lead Normal Route Starts
+        // Lead Convert  Route Starts
         Route::get('/lead/convert/{id}',[leadsController::class, 'convert'])->name('lead.convert');
         Route::post('/lead/convert/{id}',[leadsController::class, 'convertPost'])->name('lead.convert.post');
-        // Lead Normal Route End
+        // Lead Convert  Route End
         
     // Resource Routes End
 });
