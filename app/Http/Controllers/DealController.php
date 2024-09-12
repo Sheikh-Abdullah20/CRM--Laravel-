@@ -21,9 +21,17 @@ class DealController extends Controller
                 return redirect()->back();
             }
         }
-        
-        $deals = Deal::all();
-        return view('deals.index',compact('deals'));
+        $search = $request->search;
+        $deals = Deal::when($search, function($query) use ($search){
+            $query->where('deal_name','LIKE','%'.$search.'%')
+                ->orWhereHas('account',function($q) use ($search){
+                    $q->where('account_name','LIKE','%'.$search.'%');
+                })->orWhereHas('contact',function($qu) use ($search){
+                    $qu->where('contact_name','LIKE','%'.$search.'%');
+                });
+           
+        })->get();
+        return view('deals.index',compact('deals','search'));
     }
 
     /**
@@ -89,9 +97,38 @@ class DealController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function DealCsv(){
+        $deals = Deal::all();
+        $filename = "Deal_Report " . time() . ' .csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"'
+        ];
+
+        $generate = function() use ($deals){
+            $file = fopen("php://output",'w');
+
+
+            fputcsv($file,[
+                'Deal Amount', 'Deal Name', 'Deal Date','Account Name', 'Contact Name'
+            ]);
+
+            foreach($deals as $deal){
+                fputcsv($file, [
+                    $deal->deal_amount,
+                    $deal->deal_name,
+                    $deal->deal_date,
+                    $deal->account->account_name,
+                    $deal->contact->contact_name
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($generate,200,$headers);
+    }
+
     public function destroy(string $id)
     {
         $deal = Deal::find($id);

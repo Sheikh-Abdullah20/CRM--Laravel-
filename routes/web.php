@@ -32,6 +32,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/lead/convert/{id}',[leadsController::class, 'convert'])->name('lead.convert');
         Route::post('/lead/convert/{id}',[leadsController::class, 'convertPost'])->name('lead.convert.post');
         // Lead Convert  Route End
+
+        // DownloadReport Csv Route Start
+        Route::get('/download/lead/csv',[leadsController::class, 'leadCsv'])->name('lead.csv');
+        Route::get('/download/account/csv',[AccountController::class, 'AccountCsv'])->name('account.csv');
+        Route::get('/download/deal/csv',[DealController::class, 'DealCsv'])->name('deal.csv');
+        // DownloadReport Csv Route Start ends
         
     // Resource Routes End
 });

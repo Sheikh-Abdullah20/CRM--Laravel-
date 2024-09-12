@@ -20,8 +20,14 @@ class leadsController extends Controller
             Toastr()->error('Selected Leads Has Been deleted successfully',[],"Deleted");
           return redirect()->route('lead.index');
         }
-        $leads = Lead::all();
-        return view('leads.index',compact('leads'));
+
+        $search = $request->search;
+        $leads = Lead::when($search, function($query) use ($search){
+            $query->where('first_name','LIKE','%'.$search.'%')
+                    ->where('last_name','LIKE','%'.$search.'%')
+                    ->orWhere('email','LIKE','%'. $search . '%');
+        })->get();
+        return view('leads.index',compact('leads','search'));
     }
 
     
@@ -152,6 +158,35 @@ class leadsController extends Controller
             return redirect()->back();
         }
 
+    }
+
+    public function leadCsv(){
+        $leads = Lead::get();
+        $filename = "Lead_report". time() . "." . 'csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' .$filename. '"'
+        ];
+        $generate = function() use ($leads){
+            $file = fopen("php://output",'w');
+
+            fputcsv($file,[
+                'First Name', "Last Name" ,"Email" , "Website", "Phone" , "Company"
+            ]);
+
+            foreach($leads as $lead){
+                fputcsv($file,[
+                    $lead->first_name,
+                    $lead->last_name,
+                    $lead->email,
+                    $lead->website ?? 'Website Not Given',
+                    $lead->phone,
+                    $lead->company,
+                ]);
+            }
+            fclose($file);
+        };
+        return response()->stream($generate,200,$headers);
     }
    
     public function destroy(string $id)

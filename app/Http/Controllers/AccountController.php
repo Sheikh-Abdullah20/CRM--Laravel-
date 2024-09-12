@@ -21,8 +21,12 @@ class AccountController extends Controller
                 return redirect()->back();
             }
         }
-        $accounts = Account::all();
-        return view('accounts.index',compact('accounts'));
+        $search = $request->search;
+        $accounts = Account::when($search, function($query) use ($search){
+            $query->where('account_name','LIKE','%'.$search. '%')
+                ->orWhere('account_email','LIKE','%'.$search.'%');
+        })->get();
+        return view('accounts.index',compact('accounts','search'));
     }
 
     /**
@@ -94,9 +98,37 @@ class AccountController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function AccountCsv(){
+        $accounts = Account::all();
+        $filename = "Account_Report ". time() . ' ' . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+     
+
+        $generate = function() use ($accounts){
+            $file = fopen('php://output','w');
+
+            fputcsv($file,[
+                'Account Name','Account Email', 'Account Website', 'Account Phone', 'Created Date'
+            ]);
+
+            foreach($accounts as $account){
+                fputcsv($file,[
+                    $account->account_name,
+                    $account->account_email,
+                    $account->account_website,
+                    $account->account_phone,
+                    $account->created_at
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($generate,200,$headers);
+    }
     public function destroy(string $id)
     {
         $account = Account::find($id);

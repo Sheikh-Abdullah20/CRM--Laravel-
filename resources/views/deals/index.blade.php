@@ -14,9 +14,18 @@ CRM - Deals
 <div class="row mt-3">
     <div class="col-md-12">
         <div class="card">
-            @if($deals->isNotEmpty())
             <div class="card-header">
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-between flex-wrap align-items-center">
+                    <form action="{{ route('deal.index') }}" method="GET">
+                        @csrf
+                        <div class="form-group d-flex align-items-center ">
+                            <input type="search" name="search" class="form-control" placeholder="Search">
+                            <button type="submit" class="btn w-50 p-2 mx-2">Search</button>
+                        </div>   
+                    </form>
+                    
+                    @if($deals->isNotEmpty())
+                    <div class="section d-flex">
                     <form id="dealIdForm" action="{{ route('deal.index') }}" method="GET">
                         @csrf
                         <input type="hidden" name="deal_id" id="deal_id" value="">
@@ -24,9 +33,17 @@ CRM - Deals
                             Delete
                         </span>
                     </form>
+
+                    <a href="{{ route('deal.csv') }}" id="export_btn" class="btn btn-sm mx-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download mx-1" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                          </svg>
+                        Export CSV</a>
+                </div>
+                    @endif
                 </div>
             </div>
-            @endif
             
             <div class="card-body">
                 <div class="table-full-width table-responsive">
@@ -116,6 +133,11 @@ CRM - Deals
                         @endforeach
                     </table>
                 </div>
+                @if(!empty($search) && $deals->isEmpty())
+                @php
+                    Toastr()->error("No Search Results Found Please try Another Search",[],'No Result Found')
+                @endphp
+                @endif
             </div>
         </div>
     </div>
