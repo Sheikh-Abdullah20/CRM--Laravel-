@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\Contact;
 use App\Models\Deal;
 use Illuminate\Http\Request;
 
 class DealController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         if($request->filled('deal_id')){
@@ -34,49 +33,59 @@ class DealController extends Controller
         return view('deals.index',compact('deals','search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+ 
     public function create()
     {
-        //
+        $accounts = Account::all();
+        $contacts = Contact::all();
+      return view('deals.create',compact('accounts','contacts'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
-        //
+     $validatedRequest =  $request->validate([
+            'deal_amount' => 'required|numeric',
+            'deal_name' => 'required',
+            'deal_date' => 'required|date',
+            'account_id' => 'required',
+            'contact_id' => 'required',
+        ]);
+
+           $deal =  Deal::create($validatedRequest);
+
+           if($deal){
+            Toastr()->success('Deal Has Been created Succesfully');
+            return redirect()->route('deal.index');
+           }else{
+            Toastr()->error('Error Occuered While Creating Deal');
+            return redirect()->back();
+           }
+        
+
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(string $id)
     {
         $deal = Deal::find($id);
        return view('deals.show',compact('deal'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+ 
     public function edit(string $id)
     {
        $deal = Deal::find($id);
        return view('deals.edit',compact('deal'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+   
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'deal_amount' => 'required',
+            'deal_amount' => 'required|numeric',
             'deal_name' => 'required',
-            'deal_date' => 'required',
+            'deal_date' => 'required|date',
         ]);
 
         $deal = Deal::find($id);

@@ -22,7 +22,7 @@ CRM - Contacts
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between flex-wrap align-items-center">
-                    <form action="{{ route('account.index') }}" method="GET">
+                    <form action="{{ route('contact.index') }}" method="GET">
                         @csrf
                         <div class="form-group d-flex align-items-center ">
                             <input type="search" name="search" class="form-control" placeholder="Search">
@@ -32,15 +32,15 @@ CRM - Contacts
                     
                     @if($contacts->isNotEmpty())
                     <div class="section d-flex">
-                    <form id="contactIdFrom" action="{{ route('account.index') }}" method="GET">
+                    <form id="contactIdFrom" action="{{ route('contact.index') }}" method="GET">
                         @csrf
-                        <input type="hidden" name="account_id" id="account_id" value="">
+                        <input type="hidden" name="contact_id" id="contact_id" value="">
                         <span class="btn btn-danger btn-sm  d-flex justify-content-center align-items-center" id="formsubmit"> <i class="tim-icons icon-trash-simple mx-1"></i> 
                             Delete
                         </span>
                     </form>
 
-                    <a href="{{ route('account.csv') }}" id="export_btn" class="btn btn-sm mx-2 rounded">
+                    <a href="{{ route('contact.csv') }}" id="export_btn" class="btn btn-sm mx-2 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download mx-1" viewBox="0 0 16 16">
                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                             <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
@@ -110,7 +110,7 @@ CRM - Contacts
                                 <td class="td-actions">
                                     <div class="d-flex justify-content-around">
 
-                                        <a href="{{ route('account.show',$contact) }}" class="btn btn-sm">
+                                        <a href="{{ route('contact.show',$contact) }}" class="btn btn-sm">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
 
@@ -120,10 +120,10 @@ CRM - Contacts
                                             </svg>
                                         </a>
 
-                                        <a href="{{ route('account.edit',$contact) }}" class="btn btn-sm"> <i
+                                        <a href="{{ route('contact.edit',$contact) }}" class="btn btn-sm"> <i
                                                 class="tim-icons icon-pencil"></i></a>
 
-                                        <form action="{{ route('account.destroy',$contact) }}" method="POST">
+                                        <form action="{{ route('contact.destroy',$contact) }}" method="POST">
                                             @csrf
                                             @method("DELETE")
                                             <button type="submit"
@@ -168,13 +168,13 @@ CRM - Contacts
             selectedIds.push(checkbox.value);
         });
 
-        let accountInput = document.getElementById('account_id');
-        accountInput.value = selectedIds.join(',');
-            accountInput.value = selectedIds;
-            console.log(accountInput)
+        let contactInput = document.getElementById('contact_id');
+        contactInput.value = selectedIds.join(',');
+            contactInput.value = selectedIds;
+            console.log(contactInput)
             const confirmed = confirm('Are you sure You Want to Delete?');
             if(confirmed){
-                document.getElementById('accountIdForm').submit()
+                document.getElementById('contactIdFrom').submit()
             }else{
                 toastr.success("account Deletion Cancelled");
                 return false;
@@ -196,8 +196,8 @@ CRM - Contacts
             checkboxes.forEach(checkbox =>{
                 checkbox.value = selectedIds.joins(",")
             });
-            let accountInput = document.getElementById('account_id');
-            accountInput.value = selectedIds;
+            let contactInput = document.getElementById('contact_id');
+            contactInput.value = selectedIds;
             document.getElementById('contactIdFrom').submit();
          
         

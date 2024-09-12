@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/download/lead/csv',[leadsController::class, 'leadCsv'])->name('lead.csv');
         Route::get('/download/account/csv',[AccountController::class, 'AccountCsv'])->name('account.csv');
         Route::get('/download/deal/csv',[DealController::class, 'DealCsv'])->name('deal.csv');
+        Route::get('/download/contact/csv',[ContactController::class, 'ContactCsv'])->name('contact.csv');
         // DownloadReport Csv Route Start ends
         
     // Resource Routes End

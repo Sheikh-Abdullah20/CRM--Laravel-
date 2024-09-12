@@ -26,7 +26,7 @@ CRM - Create Contact
 
                     <div class="form-group">
                         <label for="contact_name">Contact Name</label>
-                        <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="Name">
+                        <input type="text" class="form-control" name="contact_name" id="contact_name" placeholder="Name" value="{{ old('contact_name') }}">
                         @error('contact_name')
                             <span class="text-danger">
                                 {{ $message }}
@@ -36,7 +36,7 @@ CRM - Create Contact
 
                     <div class="form-group">
                         <label for="contact_email">Contact Email</label>
-                        <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="Email">
+                        <input type="text" class="form-control" name="contact_email" id="contact_email" placeholder="Email" value="{{ old('contact_email') }}">
                         @error('contact_email')
                             <span class="text-danger">
                                 {{ $message }}
@@ -47,7 +47,7 @@ CRM - Create Contact
                     
                     <div class="form-group">
                         <label for="contact_phone">Contact Phone</label>
-                        <input type="text" class="form-control" name="contact_phone" id="contact_phone" placeholder="Phone">
+                        <input type="text" class="form-control" name="contact_phone" id="contact_phone" placeholder="Phone" value="{{ old('contact_phone') }}">
                         @error('contact_phone')
                             <span class="text-danger">
                                 {{ $message }}
@@ -58,7 +58,7 @@ CRM - Create Contact
                     <div class="form-group">
                         <label for="account_id">Account Name</label>
                         <select name="account_id" id="account_id" class="form-select">
-                            <option value="">Select Account</option>
+                            <option value="" hidden>Select Account</option>
                             @foreach ($accounts as $account )
                                 <option value="{{ $account->id }}">{{ $account->account_name }}</option>
                             @endforeach

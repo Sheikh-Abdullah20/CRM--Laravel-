@@ -25,7 +25,7 @@ CRM - Create Account
                     @csrf
                     <div class="form-group">
                         <label for="account_name">Account Name</label>
-                            <input type="text" name="account_name" class="form-control" id="account_name">
+                            <input type="text" name="account_name" class="form-control" id="account_name" value="{{ old('account_name') }}">
                             @error('account_name')
                                 <span class="text-danger">
                                     {{ $message }}
@@ -35,7 +35,7 @@ CRM - Create Account
 
                     <div class="form-group">
                         <label for="account_email">Account Email</label>
-                            <input type="text" name="account_email" class="form-control" id="account_email">
+                            <input type="text" name="account_email" class="form-control" id="account_email" value="{{ old('account_email') }}">
                             @error('account_email')
                                 <span class="text-danger">
                                     {{ $message }}
@@ -45,12 +45,12 @@ CRM - Create Account
 
                     <div class="form-group">
                         <label for="account_website">Account Website (Not mandatory)</label>
-                            <input type="text" name="account_website" class="form-control" id="account_website">
+                            <input type="text" name="account_website" class="form-control" id="account_website" value="{{ old('account_website') }}">
                     </div>
 
                     <div class="form-group">
                         <label for="account_phone">Account Phone</label>
-                            <input type="text" name="account_phone" class="form-control" id="account_phone">
+                            <input type="text" name="account_phone" class="form-control" id="account_phone" value="{{ old('account_phone') }}">
                             @error('account_phone')
                                 <span class="text-danger">
                                     {{ $message }}
