@@ -17,4 +17,9 @@ class Account extends Model
     public function deals(){
         return $this->hasOne(Deal::class, 'account_id');
     }
+
+
+    public function contacts(){
+        return $this->hasOne(Contact::class, 'account_id');
+    }
 }

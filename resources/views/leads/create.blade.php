@@ -51,7 +51,7 @@ CRM - Lead Create
 
 
                     <div class="form-group">
-                        <label for="Website">Website (Not Required)</label>
+                        <label for="Website">Website (Not mandatory)</label>
                         <input type="text" class="form-control" placeholder="Enter Website " name="website" id="Website" value="{{ old('email') }}">
                     </div>
 

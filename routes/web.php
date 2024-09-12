@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\leadsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -25,6 +27,7 @@ Route::middleware('auth')->group(function () {
         // Leads Route Start
         Route::resource('/lead',leadsController::class);
         Route::resource('/account',AccountController::class);
+        Route::resource('/contact',ContactController::class);
         Route::resource('/deal',DealController::class);
         // Leads Route End
 

@@ -67,6 +67,13 @@
             </a>
           </li>
 
+          <li class="{{ request()->routeIs('contact.index') ? 'active' : '' }}">
+            <a href="{{ route('contact.index') }}">
+              <i class="tim-icons icon-email-85"></i>
+              <p> Contacts</p>
+            </a>
+          </li>
+
           <li class="{{ request()->routeIs('deal.index') ? 'active' : '' }}">
             <a href="{{ route('deal.index') }}">
               <i class="tim-icons icon-puzzle-10"></i>
@@ -81,13 +88,8 @@
             </a>
           </li>
           
-         {{-- <li>
-            <a href="./typography.html">
-              <i class="tim-icons icon-align-center"></i>
-              <p>Typography</p>
-            </a>
-          </li>
-          <li>
+        
+           {{-- <li>
             <a href="./rtl.html">
               <i class="tim-icons icon-world"></i>
               <p>RTL Support</p>

@@ -15,4 +15,9 @@ class Contact extends Model
     public function deals(){
         return $this->hasOne(Deal::class, 'contact_id');
     }
+
+
+    public function account(){
+        return $this->belongsTo(Account::class, 'account_id');
+    }
 }

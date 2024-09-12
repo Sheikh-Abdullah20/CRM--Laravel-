@@ -1,22 +1,21 @@
 @extends('layouts.app')
 
 @section('title')
-CRM - Accounts
+CRM - Contacts 
 @endsection
 
 @section('content')
-{{--
-<x-alert /> --}}
 <div class="d-flex justify-content-between align-items-center">
-    <h1>Accounts</h1>
+    <h1>Contacts</h1>
 
-    <a href="{{ route('account.create') }}" class="btn">
+    <a href="{{ route('contact.create') }}" class="btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class=" mx-2 bi bi-plus-circle" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
           </svg>
-        Create Account</a>
+        Create Contact</a>
 </div>
+
 
 <div class="row mt-3">
     <div class="col-md-12">
@@ -31,9 +30,9 @@ CRM - Accounts
                         </div>   
                     </form>
                     
-                    @if($accounts->isNotEmpty())
+                    @if($contacts->isNotEmpty())
                     <div class="section d-flex">
-                    <form id="accountIdForm" action="{{ route('account.index') }}" method="GET">
+                    <form id="contactIdFrom" action="{{ route('account.index') }}" method="GET">
                         @csrf
                         <input type="hidden" name="account_id" id="account_id" value="">
                         <span class="btn btn-danger btn-sm  d-flex justify-content-center align-items-center" id="formsubmit"> <i class="tim-icons icon-trash-simple mx-1"></i> 
@@ -59,7 +58,7 @@ CRM - Accounts
                     <table class="table text-center">
                         <thead>
                             <tr>
-                                @if($accounts->isNotEmpty())
+                                @if($contacts->isNotEmpty())
                                 <th>
                                     <div class="form-check">
                                         <label class="form-check-label">
@@ -71,21 +70,21 @@ CRM - Accounts
                                     </div>
                                 </th>
                                 @endif
+                                <th>Contact Name</th>
+                                <th>Contact Email</th>
+                                <th>Contact Phone</th>
                                 <th>Account Name</th>
-                                <th>Account Email</th>
-                                <th>Account Website</th>
-                                <th>Account Phone</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        @foreach($accounts as $account)
+                        @foreach($contacts as $contact)
                         <tbody>
                             <tr>
                                 <td>
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" name="checkbox" type="checkbox"
-                                                value="{{ $account->id }}">
+                                                value="{{ $contact->id }}">
                                             <span class="form-check-sign">
                                                 <span class="check"></span>
                                             </span>
@@ -93,27 +92,25 @@ CRM - Accounts
                                     </div>
                                 </td>
                                 <td>
-                                    {{ $account->account_name }}
+                                    {{ $contact->contact_name }}
                                 </td>
                                 <td>
-                                    {{ $account->account_email }}
+                                    {{ $contact->contact_email }}
                                 </td>
-                                @if(!empty($account->account_website))
+
                                 <td>
-                                    <a href="  {{ $account->account_website }}"> {{ $account->account_website }}</a>
+                                    {{ $contact->contact_phone }}
                                 </td>
-                                @else
-                                <td>Website Not Given
-                                    @endif
-                                </td>
+                                
+                                
                                 <td>
-                                    {{ $account->account_phone }}
+                                    {{ $contact->account->account_name }}
                                 </td>
 
                                 <td class="td-actions">
                                     <div class="d-flex justify-content-around">
 
-                                        <a href="{{ route('account.show',$account) }}" class="btn btn-sm">
+                                        <a href="{{ route('account.show',$contact) }}" class="btn btn-sm">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
 
@@ -123,10 +120,10 @@ CRM - Accounts
                                             </svg>
                                         </a>
 
-                                        <a href="{{ route('account.edit',$account) }}" class="btn btn-sm"> <i
+                                        <a href="{{ route('account.edit',$contact) }}" class="btn btn-sm"> <i
                                                 class="tim-icons icon-pencil"></i></a>
 
-                                        <form action="{{ route('account.destroy',$account) }}" method="POST">
+                                        <form action="{{ route('account.destroy',$contact) }}" method="POST">
                                             @csrf
                                             @method("DELETE")
                                             <button type="submit"
@@ -143,7 +140,7 @@ CRM - Accounts
                         @endforeach
                     </table>
                 </div>
-               @if(!empty($search) && $accounts->isEmpty())
+               @if(!empty($search) && $contacts->isEmpty())
                 @php
                     Toastr()->error("No Search Result Found - Please try Another Search",[],"No Result Found ");
                 @endphp
@@ -153,6 +150,7 @@ CRM - Accounts
     </div>
 </div>
 @endsection
+
 
 @section('scripts')
 
@@ -200,7 +198,7 @@ CRM - Accounts
             });
             let accountInput = document.getElementById('account_id');
             accountInput.value = selectedIds;
-            document.getElementById('accountIdFrom').submit();
+            document.getElementById('contactIdFrom').submit();
          
         
         }
@@ -210,7 +208,7 @@ CRM - Accounts
 
     document.getElementById('export_btn').addEventListener('click', function(){
         setTimeout(()=>{
-            toastr.success("Accounts Has Been Exported Succesfully");
+            toastr.success("Contact Has Been Exported Succesfully");
         },500)
     });
    
