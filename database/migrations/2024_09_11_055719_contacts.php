@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('contact_email')->unique();
             $table->string('contact_phone');
             $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

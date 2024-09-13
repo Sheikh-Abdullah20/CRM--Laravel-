@@ -31,6 +31,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('/deal',DealController::class);
         // Leads Route End
 
+        // Deal Seprate Routes
+        Route::get('/deal/mark-as-read/{id}',[DealController::class, 'markAsRead'])->name('deal.markAsRead');
+        Route::get('/deal/notification/delete/{id}',[DealController::class, 'notificationDelete'])->name('deal.notificationDelete');
+        // Deal Seprate Routes End
+
         // Lead Convert  Route Starts
         Route::get('/lead/convert/{id}',[leadsController::class, 'convert'])->name('lead.convert');
         Route::post('/lead/convert/{id}',[leadsController::class, 'convertPost'])->name('lead.convert.post');

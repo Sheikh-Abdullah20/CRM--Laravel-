@@ -116,19 +116,19 @@ CRM - Deals
                                 </td>
                                 <td>
                                     @if($deal->deal_status === 'Not-Started')
-                                    <span class="border border-light p-2 rounded"> Not Started</span>
+                                    <span class="border border-light p-1 rounded" style="font-size:10px"> Not Started</span>
 
                                     @elseif($deal->deal_status === 'In-Progress')
-                                    <span class="border border-primary p-2 rounded"> In-Progress</span>
+                                    <span class="border border-primary p-1 rounded" style="font-size:10px"> In-Progress</span>
 
                                     @elseif($deal->deal_status === 'On-Hold')
-                                    <span class="border border-warning p-2 rounded">  On Hold</span>
+                                    <span class="border border-warning p-1 rounded" style="font-size:10px">  On Hold</span>
 
                                     @elseif($deal->deal_status === 'Cancelled')
-                                    <span class="border border-danger p-2 rounded"> Cancelled</span>
+                                    <span class="border border-danger p-1 rounded" style="font-size:10px"> Cancelled</span>
 
                                     @elseif($deal->deal_status === 'Finished')
-                                    <span class="border border-success p-2 rounded"> Finished</span>
+                                    <span class="border border-success p-1 rounded" style="font-size:10px"> Finished</span>
                                     @endif
                                 </td>
 

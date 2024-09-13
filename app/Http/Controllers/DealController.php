@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Deal;
+
+use App\Notifications\dealNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class DealController extends Controller
 {
@@ -56,11 +60,16 @@ class DealController extends Controller
             'account_id' => 'required',
             'contact_id' => 'required',
         ]);
-
+           $validatedRequest['creator_id'] = Auth::user()->id;
            $deal =  Deal::create($validatedRequest);
 
            if($deal){
+            $user = Auth::user()->name;
             Toastr()->success('Deal Has Been created Succesfully');
+
+            $message = "Deal Has Been Created";
+            Notification::send(Auth::user(), new dealNotification($deal,$message));
+
             return redirect()->route('deal.index');
            }else{
             Toastr()->error('Error Occuered While Creating Deal');
@@ -69,6 +78,7 @@ class DealController extends Controller
         
 
     }
+
 
     
     public function show(string $id)
@@ -106,6 +116,8 @@ class DealController extends Controller
             ]);
 
             if($update){
+                $message = "Deal Has Been Updated";
+                $notification = Notification::send(Auth::user(), new dealNotification($deal,$message));
                 Toastr()->success('Deal Has Been Updated Succesfully');
                 return redirect()->route('deal.index');
             }else{
@@ -149,12 +161,30 @@ class DealController extends Controller
         return response()->stream($generate,200,$headers);
     }
 
+
+
+    public function markAsRead($id){
+       $notification  = Auth::user()->notifications->Where('id',$id)->markAsRead();
+       Toastr()->success("Notification marked as read");
+       return redirect()->back();
+        
+    }
+
+
+    public function notificationDelete($id){
+        $notificationDelete = Auth::user()->notifications->where('id',$id)->first();
+         $notificationDelete->delete();
+        Toastr()->error("Marked Notification Has Been Cleared",[],'Deleted');
+        return redirect()->back();
+    }
     public function destroy(string $id)
     {
         $deal = Deal::find($id);
 
         if($deal){
             $deal->delete();
+            $message = "Deal Has Been Deleted";
+            $notification = Notification::send(Auth::user(), new dealNotification($deal,$message));
             Toastr()->error("Deal Has Been Deleted Successfully",[],'Deleted');
             return redirect()->back();
         }

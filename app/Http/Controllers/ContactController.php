@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -53,9 +54,10 @@ class ContactController extends Controller
             'contact_email' => 'required|email',
             'contact_phone' => 'required|numeric',
             'account_id' => 'required',
+            
 
         ]);
-
+        $valdiatedRequest['creator_id'] = Auth::user()->id;
         $contact = Contact::create($valdiatedRequest);
 
         if($contact){
@@ -94,7 +96,8 @@ class ContactController extends Controller
        $contact = Contact::find($id);
 
        if($contact){
-           $update =  $contact->update($validatedRequest);
+        $valdiatedRequest['creator_id'] = Auth::user()->id;
+        $update =  $contact->update($validatedRequest);
 
            if($update){
             Toastr()->success('Contact Has Been Updated Successfully');

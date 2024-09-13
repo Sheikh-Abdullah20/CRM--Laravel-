@@ -18,6 +18,7 @@ return new class extends Migration
         $table->string('account_email')->unique();
         $table->string('account_website')->nullable();
         $table->string('account_phone');
+        $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
         $table->timestamps();
        });
     }

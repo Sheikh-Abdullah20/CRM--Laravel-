@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
@@ -46,6 +47,7 @@ class AccountController extends Controller
             'account_email' => $request->account_email,
             'account_website' => $request->account_website,
             'account_phone' => $request->account_phone,
+            'creator_id' => Auth::user()->id,
         ]);
 
        if($account){
@@ -87,6 +89,7 @@ class AccountController extends Controller
                 'account_email' => $request->account_email,
                 'account_website' => $request->account_website,
                 'account_phone' => $request->account_phone,
+                'creator_id' => Auth::user()->id
             ]);
 
             if($update){

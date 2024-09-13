@@ -134,7 +134,11 @@ CRM - Profile
                 <div class="block block-three"></div>
                 <div class="block block-four"></div>
                 <a>
+                  @if(!empty($user->profile->profile))
                   <img class="avatar" id="preview" src="{{ "storage/user_profile/" . $user->profile->profile }}" alt="...">
+                  @else
+                  <img class="avatar" id="preview" src="https://via.placeholder.com/350x150" alt="...">
+                  @endif
                   @if(!empty($user->profile->profile))
                   <button class="btn btn-fill btn-primary mb-3" id="upload">Change Profile</button>
                   @else
@@ -148,7 +152,11 @@ CRM - Profile
               </div>
             </p>
             <div class="card-description">
+              @if(!empty($user->profile->about))
               {{ $user->profile->about }}
+              @else
+             
+              @endif
             </div>
           </div>
 
