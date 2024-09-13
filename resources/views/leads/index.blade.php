@@ -125,7 +125,7 @@ CRM - Leads
                                         </a>
 
                                         <a href="{{ route('lead.edit',$lead) }}" class="btn btn-sm"> <i
-                                                class="tim-icons icon-pencil"></i></a>
+                                                class="tim-icons icon-pencil"></i> </a>
 
                                         <form action="{{ route('lead.destroy',$lead) }}" method="POST">
                                             @csrf

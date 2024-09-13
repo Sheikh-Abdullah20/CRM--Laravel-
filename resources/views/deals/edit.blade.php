@@ -40,15 +40,46 @@ CRM - Deal Edit
                     </div>
 
 
+                    
                     <div class="form-group">
-                        <label for="deal_date">Deal Date</label>
-                        <input type="text" name="deal_date" class="form-control" id="deal_date" value="{{ $deal->deal_date }}">
-                        @error('deal_date')
+                        <label for="start_date">Start Date</label>
+                        <input type="date"  name="start_date" class="form-control" id="start_date" value="{{ $deal->start_date }}">
+                        @error('start_date')
                             <span class="text-danger">
                                 {{ $message }}
                             </span>
                         @enderror
                     </div>
+
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" name="end_date" class="form-control" id="end_date" value="{{ $deal->end_date }}" style="cursor: pointer;">
+                        @error('end_date')
+                            <span class="text-danger">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deal_status">Deal Status</label>
+                        <select name="deal_status" id="deal_status" class="form-select">
+                            <option value="{{ $deal->deal_status }}" hidden>{{ $deal->deal_status }}</option>
+                            <option value="Not-Started" >Not-Started</option>
+                            <option value="In-Progress" >In-Progress</option>
+                            <option value="On-Hold" >On-Hold</option>
+                            <option value="Cancelled" >Cancelled</option>
+                            <option value="Finished" >Finished</option>
+                            
+                           </select>
+                        @error('deal_status')
+                            <span class="text-danger">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+                    
+
                     <div class="form-group">
                        <button type="submit" class="btn btn-fill btn-primary">  <i
                         class="tim-icons icon-pencil mx-1"></i>  Update Deal</button>

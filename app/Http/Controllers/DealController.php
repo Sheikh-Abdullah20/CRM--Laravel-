@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Deal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DealController extends Controller
@@ -22,7 +23,7 @@ class DealController extends Controller
         }
         $search = $request->search;
         $deals = Deal::when($search, function($query) use ($search){
-            $query->where('deal_name','LIKE','%'.$search.'%')
+            $query->where('deal_name','LIKE','%'.$search.'%')->orWhere('deal_status','LIKE','%'.$search.'%')
                 ->orWhereHas('account',function($q) use ($search){
                     $q->where('account_name','LIKE','%'.$search.'%');
                 })->orWhereHas('contact',function($qu) use ($search){
@@ -38,7 +39,9 @@ class DealController extends Controller
     {
         $accounts = Account::all();
         $contacts = Contact::all();
-      return view('deals.create',compact('accounts','contacts'));
+        $currentTime = Carbon::now();
+        // return $currentTime->format('y-m-d');
+      return view('deals.create',compact('accounts','contacts','currentTime'));
     }
 
    
@@ -47,7 +50,9 @@ class DealController extends Controller
      $validatedRequest =  $request->validate([
             'deal_amount' => 'required|numeric',
             'deal_name' => 'required',
-            'deal_date' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'deal_status' => 'required',
             'account_id' => 'required',
             'contact_id' => 'required',
         ]);
@@ -85,7 +90,9 @@ class DealController extends Controller
         $request->validate([
             'deal_amount' => 'required|numeric',
             'deal_name' => 'required',
-            'deal_date' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'deal_status' => 'required'
         ]);
 
         $deal = Deal::find($id);
@@ -93,7 +100,9 @@ class DealController extends Controller
             $update = $deal->update([
                 'deal_amount' => $request->deal_amount,
                 'deal_name' => $request->deal_name,
-                'deal_date' => $request->deal_date,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'deal_status' => $request->deal_status,
             ]);
 
             if($update){
@@ -119,16 +128,18 @@ class DealController extends Controller
 
 
             fputcsv($file,[
-                'Deal Amount', 'Deal Name', 'Deal Date','Account Name', 'Contact Name'
+                'Deal Amount', 'Deal Name', 'Start Date','End Date','Account Name', 'Contact Name', "Deal Status"
             ]);
 
             foreach($deals as $deal){
                 fputcsv($file, [
                     $deal->deal_amount,
                     $deal->deal_name,
-                    $deal->deal_date,
+                    $deal->start_date,
+                    $deal->end_date,
                     $deal->account->account_name,
-                    $deal->contact->contact_name
+                    $deal->contact->contact_name,
+                    $deal->deal_status
                 ]);
             }
 

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->decimal('deal_amount',10,2)->default(0.00);
             $table->string('deal_name');
-            $table->date('deal_date');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('deal_status');
             $table->foreignId('account_id')->constrained('accounts')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('contact_id')->constrained('contacts')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
