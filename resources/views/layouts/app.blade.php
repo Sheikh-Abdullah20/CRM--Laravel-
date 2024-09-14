@@ -136,10 +136,10 @@
 
                   @foreach(auth()->user()->notifications as $notification)
 
-                  @if($notification->data['deal_id'])
+                  @if(!empty(($notification->data['deal_id'])))
 
                   <li class="nav-link d-flex justify-content-around">
-                    <a href="{{ route('deal.notificationDelete',$notification->id) }}">
+                    <a href="{{ route('deleteNotification',$notification->id) }}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x mt-3 p-0" viewBox="0 0 16 16">
                         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                       </svg>
@@ -156,7 +156,107 @@
                     @endif
 
                     @if(!$notification->read_at)
-                    <a href="{{ route('deal.markAsRead',$notification->id) }}">
+                    <a href="{{ route('notificationMarkAsRead',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="mt-2" viewBox="0 0 24 24" width="24px" height="24px">
+                        <path d="M20 4H4C2.897 4 2 4.897 2 6v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 5.333-8-5.333V6h16zM4 18V8.264l7.28 4.854a1.001 1.001 0 0 0 1.439 0L20 8.264V18H4z"/>
+                    </svg>
+                    </a>
+
+                    @else
+                    <svg xmlns="http://www.w3.org/2000/svg" class=" mt-2 " viewBox="0 0 24 24" width="24px" height="24px">
+                      <path d="M12 12.713L.015 6.013 12 1.75l11.985 4.263L12 12.713zm0 2.285l12-6.856V18.5c0 1.379-1.121 2.5-2.5 2.5h-19C1.121 21 0 19.879 0 18.5V8.142l12 6.856z"/>
+                  </svg>
+                  @endif
+                  </li>
+
+                  @elseif(!empty($notification->data['lead_id']))
+                  <li class="nav-link d-flex justify-content-around">
+                    <a href="{{ route('deleteNotification',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x mt-3 p-0" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                      </svg>
+                    </a>
+
+                    @php
+                      $leadExists = \App\Models\Lead::find($notification->data['lead_id']);  
+                    @endphp
+
+                    @if($leadExists)
+                    <a href="{{  route('lead.show', $notification->data['lead_id'])  }}" class="nav-item dropdown-item">{{ $notification->data['message'] }}</a> 
+                    @else
+                    <span class="nav-item dropdown-item">{{ $notification->data['message'] }}</span> 
+                    @endif
+
+                    @if(!$notification->read_at)
+                    <a href="{{ route('notificationMarkAsRead',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="mt-2" viewBox="0 0 24 24" width="24px" height="24px">
+                        <path d="M20 4H4C2.897 4 2 4.897 2 6v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 5.333-8-5.333V6h16zM4 18V8.264l7.28 4.854a1.001 1.001 0 0 0 1.439 0L20 8.264V18H4z"/>
+                    </svg>
+                    </a>
+
+                    @else
+                    <svg xmlns="http://www.w3.org/2000/svg" class=" mt-2 " viewBox="0 0 24 24" width="24px" height="24px">
+                      <path d="M12 12.713L.015 6.013 12 1.75l11.985 4.263L12 12.713zm0 2.285l12-6.856V18.5c0 1.379-1.121 2.5-2.5 2.5h-19C1.121 21 0 19.879 0 18.5V8.142l12 6.856z"/>
+                  </svg>
+                  @endif
+                  </li>
+                  
+
+
+                  @elseif(!empty($notification->data['account_id']))
+                  <li class="nav-link d-flex justify-content-around">
+                    <a href="{{ route('deleteNotification',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x mt-3 p-0" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                      </svg>
+                    </a>
+
+                    @php
+                      $AccountExists = \App\Models\Account::find($notification->data['account_id']);  
+                    @endphp
+
+                    @if($AccountExists)
+                    <a href="{{  route('account.show', $notification->data['account_id'])  }}" class="nav-item dropdown-item">{{ $notification->data['message'] }}</a> 
+                    @else
+                    <span class="nav-item dropdown-item">{{ $notification->data['message'] }}</span> 
+                    @endif
+
+                    @if(!$notification->read_at)
+                    <a href="{{ route('notificationMarkAsRead',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="mt-2" viewBox="0 0 24 24" width="24px" height="24px">
+                        <path d="M20 4H4C2.897 4 2 4.897 2 6v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 5.333-8-5.333V6h16zM4 18V8.264l7.28 4.854a1.001 1.001 0 0 0 1.439 0L20 8.264V18H4z"/>
+                    </svg>
+                    </a>
+
+                    @else
+                    <svg xmlns="http://www.w3.org/2000/svg" class=" mt-2 " viewBox="0 0 24 24" width="24px" height="24px">
+                      <path d="M12 12.713L.015 6.013 12 1.75l11.985 4.263L12 12.713zm0 2.285l12-6.856V18.5c0 1.379-1.121 2.5-2.5 2.5h-19C1.121 21 0 19.879 0 18.5V8.142l12 6.856z"/>
+                  </svg>
+                  @endif
+                  </li>
+                  
+
+                  
+                  @elseif(!empty($notification->data['contact_id']))
+                  <li class="nav-link d-flex justify-content-around">
+                    <a href="{{ route('deleteNotification',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x mt-3 p-0" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                      </svg>
+                    </a>
+
+                    @php
+                      $AccountExists = \App\Models\Account::find($notification->data['contact_id']);  
+                    @endphp
+
+                    @if($AccountExists)
+                    <a href="{{  route('contact.show', $notification->data['contact_id'])  }}" class="nav-item dropdown-item">{{ $notification->data['message'] }}</a> 
+                    @else
+                    <span class="nav-item dropdown-item">{{ $notification->data['message'] }}</span> 
+                    @endif
+
+                    @if(!$notification->read_at)
+                    <a href="{{ route('notificationMarkAsRead',$notification->id) }}">
                       <svg xmlns="http://www.w3.org/2000/svg" class="mt-2" viewBox="0 0 24 24" width="24px" height="24px">
                         <path d="M20 4H4C2.897 4 2 4.897 2 6v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 5.333-8-5.333V6h16zM4 18V8.264l7.28 4.854a1.001 1.001 0 0 0 1.439 0L20 8.264V18H4z"/>
                     </svg>
@@ -171,7 +271,6 @@
 
                   @endif
                   @endforeach
-  
                 </ul>
               </li>
               <li class="dropdown nav-item">
@@ -250,7 +349,10 @@
       </ul>
     </div>
   </div> --}}
-  <!--   Core JS Files   -->
+  
+</body>
+@yield('scripts')
+<!--   Core JS Files   -->
   <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
   <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
@@ -265,117 +367,7 @@
 
   <script src="{{ asset('assets/js/black-dashboard.min.js?v=1.0.0') }}"></script><!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="{{ asset('assets/demo/demo.js') }}"></script>
-  {{-- <script>
-    $(document).ready(function() {
-      $().ready(function() {
-        $sidebar = $('.sidebar');
-        $navbar = $('.navbar');
-        $main_panel = $('.main-panel');
-
-        $full_page = $('.full-page');
-
-        $sidebar_responsive = $('body > .navbar-collapse');
-        sidebar_mini_active = true;
-        white_color = false;
-
-        window_width = $(window).width();
-
-        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-
-
-        $('.fixed-plugin a').click(function(event) {
-          if ($(this).hasClass('switch-trigger')) {
-            if (event.stopPropagation) {
-              event.stopPropagation();
-            } else if (window.event) {
-              window.event.cancelBubble = true;
-            }
-          }
-        });
-
-        $('.fixed-plugin .background-color span').click(function() {
-          $(this).siblings().removeClass('active');
-          $(this).addClass('active');
-
-          var new_color = $(this).data('color');
-
-          if ($sidebar.length != 0) {
-            $sidebar.attr('data', new_color);
-          }
-
-          if ($main_panel.length != 0) {
-            $main_panel.attr('data', new_color);
-          }
-
-          if ($full_page.length != 0) {
-            $full_page.attr('filter-color', new_color);
-          }
-
-          if ($sidebar_responsive.length != 0) {
-            $sidebar_responsive.attr('data', new_color);
-          }
-        });
-
-        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
-          var $btn = $(this);
-
-          if (sidebar_mini_active == true) {
-            $('body').removeClass('sidebar-mini');
-            sidebar_mini_active = false;
-            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
-          } else {
-            $('body').addClass('sidebar-mini');
-            sidebar_mini_active = true;
-            blackDashboard.showSidebarMessage('Sidebar mini activated...');
-          }
-
-          // we simulate the window Resize so the charts will get updated in realtime.
-          var simulateWindowResize = setInterval(function() {
-            window.dispatchEvent(new Event('resize'));
-          }, 180);
-
-          // we stop the simulation of Window Resize after the animations are completed
-          setTimeout(function() {
-            clearInterval(simulateWindowResize);
-          }, 1000);
-        });
-
-        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
-          var $btn = $(this);
-
-          if (white_color == true) {
-
-            $('body').addClass('change-background');
-            setTimeout(function() {
-              $('body').removeClass('change-background');
-              $('body').removeClass('white-content');
-            }, 900);
-            white_color = false;
-          } else {
-
-            $('body').addClass('change-background');
-            setTimeout(function() {
-              $('body').removeClass('change-background');
-              $('body').addClass('white-content');
-            }, 900);
-
-            white_color = true;
-          }
-
-
-        });
-
-        $('.light-badge').click(function() {
-          $('body').addClass('white-content');
-        });
-
-        $('.dark-badge').click(function() {
-          $('body').removeClass('white-content');
-        });
-      });
-    });
-  </script> --}}
+ 
   <script>
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
@@ -385,7 +377,5 @@
   </script>
 
 <script src="{{ asset('assets/js/toastr.js') }}"></script>
-  @yield('scripts')
-</body>
 
 </html>

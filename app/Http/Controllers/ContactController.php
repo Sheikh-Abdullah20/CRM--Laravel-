@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Contact;
+use App\Notifications\contactNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class ContactController extends Controller
 {
@@ -138,12 +140,15 @@ class ContactController extends Controller
 
         return response()->stream($generate,200,$headers);
     }
+
    
     public function destroy(string $id)
     {
        $contact = Contact::find($id);
 
        if($contact){
+        $message  = "Contact Has Been Deleted";
+        $notification = Notification::send(Auth::user(), new contactNotification($contact,$message));
         $contact->delete();
         Toastr()->error('Contact Has Been Deleted Successfully',[],'Deleted');
         return redirect()->back();

@@ -6,7 +6,11 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Lead;
+use App\Notifications\leadNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class leadsController extends Controller
 {
@@ -17,8 +21,9 @@ class leadsController extends Controller
             $selectedIds = (string) $request->lead_id;
             $ids_into_array = explode(",",$selectedIds);
             $selected_leads = Lead::whereIn('id',$ids_into_array)->delete();
+
             Toastr()->error('Selected Leads Has Been deleted successfully',[],"Deleted");
-          return redirect()->route('lead.index');
+            return redirect()->route('lead.index');
         }
 
         $search = $request->search;
@@ -42,7 +47,7 @@ class leadsController extends Controller
        $request->validate([
         'first_name' => 'required',
         'last_name' => 'required',
-        'email' => 'required|unique:leads,email',
+        'email' => 'required|email|unique:accounts,account_email|unique:contacts,contact_email|unique:leads,email',
         'phone' => 'required|numeric',
         'company' => 'required'
        ]);
@@ -57,6 +62,8 @@ class leadsController extends Controller
        ]);
 
        if($lead){
+        $message = "New Lead Created..";
+        $notification = Notification::send(Auth::user(), new leadNotification($lead,$message));
         Toastr()->success('Lead created successfully');
         return redirect()->route('lead.index');
        }else{
@@ -86,7 +93,7 @@ class leadsController extends Controller
             $request->validate([
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:accounts,account_email|unique:contacts,contact_email',
                 'phone' => 'required|numeric',
                 'company' => 'required'
             ]);
@@ -101,6 +108,8 @@ class leadsController extends Controller
             ]);
 
             if($update){
+                $message = "lead Has Been Updated";
+                $notification = Notification::send(Auth::user(), new leadNotification($lead,$message));
                 Toastr()->success('Lead Updated Successfully');
                 return redirect()->route('lead.index');
             }else{
@@ -112,7 +121,9 @@ class leadsController extends Controller
 
     public function convert($id){
         $lead = Lead::find($id);
-        return view('leads.convert',compact('lead'));
+        $currentTime = Carbon::now();
+
+        return view('leads.convert',compact('lead','currentTime'));
     }
 
 
@@ -120,7 +131,8 @@ class leadsController extends Controller
         $request->validate([
             'deal_amount' => 'required|numeric',
             'deal_name' => 'required|string',
-            'deal_date' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
 
         ]);
 
@@ -131,6 +143,7 @@ class leadsController extends Controller
             'account_email' => $lead->email,
             'account_website' => $lead->website ?? null,
             'account_phone' => $lead->phone,
+            'creator_id' => Auth::user()->id
         ]);
     
         $contact = Contact::create([
@@ -138,18 +151,23 @@ class leadsController extends Controller
             'contact_email' => $lead->email,
             'contact_phone' => $lead->phone,
             'account_id' => $account->id,
+            'creator_id' => Auth::user()->id
         ]);
 
 
       $deal =   Deal::create([
             'deal_amount' => $request->deal_amount,
             'deal_name' => $request->deal_name,
-            'deal_date' => $request->deal_date,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
             'account_id' => $account->id,
             'contact_id' => $contact->id,
+            'creator_id' => Auth::user()->id
         ]);
 
         if($deal){
+            $message = "New lead Has Been Converted";
+            $notification = Notification::send(Auth::user(), new leadNotification($lead,$message));
             Toastr()->success("Deal Has Been Created Succesfully And Account , Contact Has Been Added ");
             $lead->delete();
             return redirect()->route('lead.index');
@@ -188,14 +206,18 @@ class leadsController extends Controller
         };
         return response()->stream($generate,200,$headers);
     }
+
+
    
     public function destroy(string $id)
     {
         $lead  = Lead::find($id);
         if($lead){
             $delete = $lead->delete();
-
+            
             if($delete){
+                $message = "lead Has Been Deleted";
+                $notification = Notification::send(Auth::user(), new leadNotification($lead,$message));
                 Toastr()->error('Lead Has Been Deleted Successfully',[],'Deleted');
                 return redirect()->route('lead.index');
             }else{

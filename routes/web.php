@@ -5,8 +5,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\leadsController;
+use App\Http\Controllers\notificationControlController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -31,15 +33,17 @@ Route::middleware('auth')->group(function () {
         Route::resource('/deal',DealController::class);
         // Leads Route End
 
-        // Deal Seprate Routes
-        Route::get('/deal/mark-as-read/{id}',[DealController::class, 'markAsRead'])->name('deal.markAsRead');
-        Route::get('/deal/notification/delete/{id}',[DealController::class, 'notificationDelete'])->name('deal.notificationDelete');
-        // Deal Seprate Routes End
+
 
         // Lead Convert  Route Starts
         Route::get('/lead/convert/{id}',[leadsController::class, 'convert'])->name('lead.convert');
         Route::post('/lead/convert/{id}',[leadsController::class, 'convertPost'])->name('lead.convert.post');
         // Lead Convert  Route End
+
+        // Notification Control Controller Route Start
+        Route::get('/contact/notification/mark-as-read/{id}',[notificationControlController::class, 'markAsRead'])->name('notificationMarkAsRead');
+        Route::get('/contact/notification/delete/{id}',[notificationControlController::class, 'deleteNotification'])->name('deleteNotification');
+        // Notification Control Controller Route End
 
         // DownloadReport Csv Route Start
         Route::get('/download/lead/csv',[leadsController::class, 'leadCsv'])->name('lead.csv');

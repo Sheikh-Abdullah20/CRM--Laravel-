@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('deal_name');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('deal_status');
+            $table->string('deal_status')->default('Not-Started');
             $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('account_id')->constrained('accounts')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('contact_id')->constrained('contacts')->cascadeOnUpdate()->cascadeOnDelete();

@@ -64,10 +64,21 @@ CRM - Lead Convert
                     </div>
 
                     <div class="form-group">
-                        <label for="deal_date">Deal Date</label>
-                        <input type="date" class="form-control" name="deal_date" id="deal_date" style="cursor: 
+                        <label for="start_date">Start Date</label>
+                        <input type="text" class="form-control" name="start_date" id="start_date" style="cursor: 
+                        pointer" readonly value="{{ $currentTime->format('Y-m-d') }}">
+                        @error('start_date')
+                            <span class="text-danger">
+                                {{ $message }}    
+                            </span>                            
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" name="end_date" id="end_date" style="cursor: 
                         pointer">
-                        @error('deal_date')
+                        @error('end_date')
                             <span class="text-danger">
                                 {{ $message }}    
                             </span>                            

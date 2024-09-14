@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Notifications\accountNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AccountController extends Controller
 {
@@ -51,6 +53,8 @@ class AccountController extends Controller
         ]);
 
        if($account){
+        $message = "Account Has Been Created";
+        $notification = Notification::send(Auth::user(), new accountNotification($account,$message));
         Toastr()->success("Account Has Been created successfully");
          return redirect()->route('account.index');
        } else{
@@ -93,6 +97,8 @@ class AccountController extends Controller
             ]);
 
             if($update){
+                $message = "Account Has Been Updated";
+                $notification = Notification::send(Auth::user(), new accountNotification($account,$message));
                 Toastr()->success("Account Has Been Updated Successfully");
                 return redirect()->route('account.index');
             }else{
@@ -136,10 +142,16 @@ class AccountController extends Controller
 
         return response()->stream($generate,200,$headers);
     }
+
+
+
+   
     public function destroy(string $id)
     {
         $account = Account::find($id);
         if($account){
+            $message = "Account Has Been Deleted";
+            $notification = Notification::send(Auth::user(), new accountNotification($account,$message));
             $account->delete();
             Toastr()->error("Account Has Been Deleted Successfully",[],'Deleted');
             return redirect()->back();

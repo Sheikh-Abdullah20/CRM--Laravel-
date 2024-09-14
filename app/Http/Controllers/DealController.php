@@ -163,20 +163,6 @@ class DealController extends Controller
 
 
 
-    public function markAsRead($id){
-       $notification  = Auth::user()->notifications->Where('id',$id)->markAsRead();
-       Toastr()->success("Notification marked as read");
-       return redirect()->back();
-        
-    }
-
-
-    public function notificationDelete($id){
-        $notificationDelete = Auth::user()->notifications->where('id',$id)->first();
-         $notificationDelete->delete();
-        Toastr()->error("Marked Notification Has Been Cleared",[],'Deleted');
-        return redirect()->back();
-    }
     public function destroy(string $id)
     {
         $deal = Deal::find($id);
