@@ -54,12 +54,7 @@
               <p>Leads</p>
             </a>
           </li>
-          {{-- <li>
-            <a href="./map.html">
-              <i class="tim-icons icon-pin"></i>
-              <p>Maps</p>
-            </a>
-          </li> --}}
+         
           <li class="{{ request()->routeIs('account.index') ? 'active' : '' }}">
             <a href="{{ route('account.index') }}">
               <i class="tim-icons icon-badge"></i>
@@ -81,10 +76,17 @@
             </a>
           </li>
 
+          <li class="{{request()->routeIs('meeting.index') ? 'active' : ''}}">
+            <a href="{{ route('meeting.index') }}">
+              <i class="tim-icons icon-world"></i>
+              <p>Meetings</p>
+            </a>
+          </li>
+
             <li class="{{ request()->routeIs('profile.edit') ? 'active ' : '' }}">
             <a href="{{ route('profile.edit') }}">
               <i class="tim-icons icon-single-02"></i>
-              <p>User Profile</p>
+              <p>Profile</p>
             </a>
           </li>
           
