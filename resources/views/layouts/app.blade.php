@@ -136,6 +136,8 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right dropdown-navbar align-content-center">
 
+
+              
                   @foreach(auth()->user()->notifications as $notification)
 
                   @if(!empty(($notification->data['deal_id'])))
@@ -270,6 +272,39 @@
                   </svg>
                   @endif
                   </li>
+
+                  @elseif(!empty($notification->data['meeting_id']))
+                  <li class="nav-link d-flex justify-content-around">
+                    <a href="{{ route('deleteNotification',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x mt-3 p-0" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                      </svg>
+                    </a>
+
+                    @php
+                      $AccountExists = \App\Models\Meeting::find($notification->data['meeting_id']);  
+                    @endphp
+
+                    @if($AccountExists)
+                    <a href="{{  route('meeting.show', $notification->data['meeting_id'])  }}" class="nav-item dropdown-item">{{ $notification->data['message'] }}</a> 
+                    @else
+                    <span class="nav-item dropdown-item">{{ $notification->data['message'] }}</span> 
+                    @endif
+
+                    @if(!$notification->read_at)
+                    <a href="{{ route('notificationMarkAsRead',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="mt-2" viewBox="0 0 24 24" width="24px" height="24px">
+                        <path d="M20 4H4C2.897 4 2 4.897 2 6v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 5.333-8-5.333V6h16zM4 18V8.264l7.28 4.854a1.001 1.001 0 0 0 1.439 0L20 8.264V18H4z"/>
+                    </svg>
+                    </a>
+
+                    @else
+                    <svg xmlns="http://www.w3.org/2000/svg" class=" mt-2 " viewBox="0 0 24 24" width="24px" height="24px">
+                      <path d="M12 12.713L.015 6.013 12 1.75l11.985 4.263L12 12.713zm0 2.285l12-6.856V18.5c0 1.379-1.121 2.5-2.5 2.5h-19C1.121 21 0 19.879 0 18.5V8.142l12 6.856z"/>
+                  </svg>
+                  @endif
+                  </li>
+
 
                   @endif
                   @endforeach

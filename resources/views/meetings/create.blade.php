@@ -4,7 +4,14 @@
 @section('title')
 CRM - Create Meeting
 @endsection
+@section('css')
 
+<style>
+ option {
+    color: rgb(187, 146, 146)
+ }
+</style>
+@endsection
 @section('content')
 <div class="d-flex justify-content-between">
     <h1>Create Meeting</h1>
@@ -13,16 +20,16 @@ CRM - Create Meeting
 </div>
 
 
-<div class="row">
+<div class="row my-3">
     <div class="col-md-12">
 
         <div class="card">
             <div class="card-body">
 
-                <form action="{{ route('meeting.store') }}" method="POST" class="p-3">
+                <form action="{{ route('meeting.store') }}" method="POST" >
                     @csrf
                     
-                    <div class="form-group mb-3">
+                    <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{ old('title') }}">
                         @error('title')
@@ -32,7 +39,7 @@ CRM - Create Meeting
                         @enderror
                     </div>
 
-                    <div class="form-group mb-3">
+                    <div class="form-group">
                         <label for="location">Location</label>
                         <input type="text" class="form-control" id="location" name="location" placeholder="location" value="{{ old('location') }}">
                         @error('location')
@@ -43,7 +50,7 @@ CRM - Create Meeting
                     </div>
 
 
-                    <div class="form-group mb-3">
+                    <div class="form-group ">
                         <label for="from">From</label>
                         <input type="datetime-local" class="form-control" id="from" name="from" value="{{ old('from') }}">
                         @error('from')
@@ -54,7 +61,7 @@ CRM - Create Meeting
                     </div>
 
 
-                    <div class="form-group mb-3">
+                    <div class="form-group ">
                         <label for="to">To</label>
                         <input type="datetime-local" class="form-control" id="to" name="to" value="{{ old('to') }}">
                         @error('to')
@@ -65,9 +72,9 @@ CRM - Create Meeting
                     </div>
 
 
-                    <div class="form-group mb-3">
+                    <div class="form-group">
                         <label for="host">Host</label>
-                        <input type="text" class="form-control" id="host" name="host" placeholder="Host" value="{{ old('host') }}">
+                        <input type="text" class="form-control" id="host" name="host" placeholder="Host" value="{{ auth()->user()->first_name . ' ' . auth()->user()->last_name }}">
                         @error('host')
                             <span class="text-danger">
                                 {{ $message }}
@@ -75,13 +82,13 @@ CRM - Create Meeting
                         @enderror
                     </div>
 
-                    <div class="form-group mb-3" >
+                    <div class="form-group" >
                         <label for="participants">Participants</label>
-                        <select class="form-select" id="participants" name="participants">
-                            <option value="" hidden>Select Participant</option>
-                            <option value="contacts" {{ old('participants')=== 'contacts' ? 'selected' : ''  }} >Contacts</option>
-                            <option value="accounts" {{ old('participants')=== 'accounts' ? 'selected' : ''  }} >Accounts</option>
-                            <option value="leads" {{ old('participants')=== 'leads' ? 'selected' : ''  }} >Leads</option>  
+                        <select class="custom-select" id="participants" name="participants">
+                            <option value="" hidden>None</option>
+                            <option class="option" value="contacts" {{ old('participants')=== 'contacts' ? 'selected' : ''  }} >Contacts</option>
+                            <option class="option" value="accounts" {{ old('participants')=== 'accounts' ? 'selected' : ''  }} >Accounts</option>
+                            <option class="option" value="leads" {{ old('participants')=== 'leads' ? 'selected' : ''  }} >Leads</option>  
                         </select>
                         @if ($errors->has('participants'))
                         <span class="text-danger">
@@ -106,43 +113,77 @@ CRM - Create Meeting
                         
                     </div>
 
-
-                    <div class="form-group mb-5 " id="contact" style="display: none;">
+                    <div class="form-group  " id="contact" style="display: none;">
                         <label for="contacts">Contacts</label>
-                        <select class="form-select" id="contacts" name="contacts">
-                            <option value="" hidden>Select Participant</option>
+                        <select class="custom-select" id="contacts" name="contacts[]" multiple size="10">
+                            <option value="" hidden>Select Contacts</option>
                            @foreach($contacts as $contact)
-                            <option value="{{ $contact->id}}">{{ $contact->contact_name }}</option>
+                            <option class="option" value="{{ $contact->contact_name}}">{{ $contact->contact_name }}</option>
                            @endforeach
                         </select>
                         
                     </div>
 
 
-                    <div class="form-group mb-5 " id="account" style="display: none;">
+                    <div class="form-group " id="account" style="display: none;">
                         <label for="accounts">Accounts</label>
-                        <select class="form-select" id="accounts" name="accounts">
-                            <option value="" hidden >Select Participant</option>
+                        <select class="custom-select" id="accounts" name="accounts[]" multiple size="10">
+                            <option value="" hidden >Select Accounts</option>
                            @foreach($accounts as $account)
-                            <option value="{{ $account->id }}">{{ $account->account_name }}</option>
+                            <option class="option" value="{{ $account->account_name }}">{{ $account->account_name }}</option>
                            @endforeach
                         </select>
                         
                     </div>
 
 
-                    <div class="form-group mb-5 " id="lead" style="display: none;">
+                    <div class="form-group " id="lead" style="display: none;">
                         <label for="leads">Leads</label>
-                        <select class="form-select" id="leads" name="leads">
-                            <option value="" hidden>Select Participant</option>
+                        <select class="custom-select" id="leads" name="leads[]" multiple size="10">
+                            <option value="" hidden>Select Leads</option>
                            @foreach($leads as $lead)
-                            <option value="{{ $lead->id }}">{{ $lead->first_name . ' ' . $lead->last_name }}</option>
+                            <option class="option" value="{{ $lead->first_name . ' ' . $lead->last_name }}" >{{ $lead->first_name . ' ' . $lead->last_name }}</option>
                            @endforeach
                         </select>
                         
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group " id="related_to">
+                        <label for="related_to_select">Related To</label>
+                        <input type="text" name="related_to" id="related_to" class="form-control" placeholder="Add Realted About Meeting">
+                        @error('related_to')
+                            <span class="text-danger">
+                                {{ $message }}
+                            </span>
+                            
+                        @enderror
+                        
+                    </div>
+
+                    
+
+
+
+                    <div class="form-group  " id="meeting_reminder">
+                        <label for="meeting_reminder">Meeting Reminder</label>
+                        <select class="custom-select" id="related_to_value_leads" name="meeting_reminder">
+                            <option value="" hidden>None</option>
+                            <option class="option" value="30-Minutes" >30-Minutes</option>
+                            <option class="option" value="1-Hour" >1-Hour</option>
+                            <option class="option" value="5-Hour" >5-Hour</option>
+                            <option class="option" value="1-Day" >1-Day</option>
+                        
+                        </select>
+                        @error('meeting_reminder')
+                            <span class="text-danger">
+                                {{ $message }}
+                            </span>
+                            
+                        @enderror     
+                    </div>
+
+
+                    <div class="form-group my-4">
                         <button type="submit" class="btn btn-fill btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class=" mx-2 bi bi-plus-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
@@ -193,6 +234,7 @@ document.addEventListener('DOMContentLoaded',function(){
   updateSelect();
   participant.addEventListener('change', updateSelect);
 });
+
 
 </script>
 

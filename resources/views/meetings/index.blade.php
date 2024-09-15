@@ -73,7 +73,7 @@ CRM - Meetings
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Related To</th>
-                                <th>Contact Name</th>
+                                <th>Participants Name <br> Account / Contact</th>
                                 <th>Host</th>
                                 <th>meeting Status</th>
                                 <th>Action</th>
@@ -97,33 +97,37 @@ CRM - Meetings
                                     {{ $meeting->meeting_name	 }}
                                 </td>
                                 <td>
-                                    {{ $meeting->meeting_from }}
+                                    {{ $meeting->meeting_from->format('D-M-Y H:i:s') }}
                                 </td>
 
                                 <td>
-                                    {{ $meeting->meeting_to }}
+                                    {{ $meeting->meeting_to->format('D-M-Y H:i:s') }}
                                 </td>
                               
+                                
                                 <td>
-                                    {{ $meeting->meeting_related_to_value }}
+                                    {{ $meeting->meeting_related_to }}
                                 </td>
 
                                 <td>
-                                    {{ $meeting->meeting_related_to }}
+                                   
+                                   
+                                {{ str_replace(', ', ' || ' , $meeting->meeting_participants_name) }}
+                                
                                 </td>
 
                                 <td>
                                     {{ $meeting->meeting_host }}
                                 </td>
                                 <td>
-                                    @if($meeting->status === 'Waiting')
-                                    <span class="border border-light"> {{ $meeting->meeting_status }}</span>
+                                    @if($meeting->meeting_status === 'Waiting')
+                                    <span class="border border-light p-1 rounded "style="font-size:10px"> {{ $meeting->meeting_status }}</span>
                                     
-                                    @elseif($meeting->status === 'In-Meeting')
-                                    <span class="border border-warning"> {{ $meeting->meeting_status }}</span>
+                                    @elseif($meeting->meeting_status === 'In-Meeting')
+                                    <span class="border border-warning p-1 rounded "style="font-size:10px"> {{ $meeting->meeting_status }}</span>
 
-                                    @elseif($meeting->status === 'Finished')
-                                    <span class="border border-success"> {{ $meeting->meeting_status }}</span>
+                                    @elseif($meeting->meeting_status === 'Finished')
+                                    <span class="border border-success p-1 rounded "style="font-size:10px"> {{ $meeting->meeting_status }}</span>
 
                                     @endif
                                 </td>

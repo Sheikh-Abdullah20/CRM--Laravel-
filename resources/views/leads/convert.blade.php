@@ -65,8 +65,8 @@ CRM - Lead Convert
 
                     <div class="form-group">
                         <label for="start_date">Start Date</label>
-                        <input type="text" class="form-control" name="start_date" id="start_date" style="cursor: 
-                        pointer" readonly value="{{ $currentTime->format('Y-m-d') }}">
+                        <input type="date" class="form-control" name="start_date" id="start_date" style="cursor: 
+                        pointer"  value="{{ old('start_date') }}">
                         @error('start_date')
                             <span class="text-danger">
                                 {{ $message }}    
@@ -77,7 +77,7 @@ CRM - Lead Convert
                     <div class="form-group">
                         <label for="end_date">End Date</label>
                         <input type="date" class="form-control" name="end_date" id="end_date" style="cursor: 
-                        pointer">
+                        pointer" value="{{ old("end_date") }}">
                         @error('end_date')
                             <span class="text-danger">
                                 {{ $message }}    

@@ -15,14 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('meeting_name');
             $table->string('meeting_location');
-            $table->date('meeting_from');
-            $table->date('meeting_to');
+            $table->dateTime('meeting_from');
+            $table->dateTime('meeting_to');
             $table->string('meeting_host');
             $table->string('meeting_participants');
-            $table->integer('meeting_related_to');
-            $table->integer('meeting_related_to_value');
-            $table->string('meeting_status');
-            $table->dateTime('meeting_reminder');
+            $table->string('meeting_participants_name');
+            $table->string('meeting_related_to');
+            $table->string('meeting_status')->default("Waiting");
+            $table->string('meeting_reminder');
+            $table->string('meeting_reminder_status')->default('false');
+            $table->integer('meeting_creator_id');
 
             $table->timestamps();
         });

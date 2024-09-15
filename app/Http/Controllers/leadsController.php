@@ -121,9 +121,8 @@ class leadsController extends Controller
 
     public function convert($id){
         $lead = Lead::find($id);
-        $currentTime = Carbon::now();
-
-        return view('leads.convert',compact('lead','currentTime'));
+      
+        return view('leads.convert',compact('lead'));
     }
 
 

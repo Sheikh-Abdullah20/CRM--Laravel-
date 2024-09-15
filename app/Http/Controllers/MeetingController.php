@@ -6,15 +6,35 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Lead;
 use App\Models\Meeting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MeetingController extends Controller
 {
   
     public function index(Request $request)
     {
-        $meetings = Meeting::all();
-        return view('meetings.index',compact('meetings'));
+        
+       
+
+        if($request->meeting_id){
+            $selected_ids =  $request->meeting_id;
+            $ids_into_array = explode(',',$selected_ids);
+            Meeting::whereIn('id',$ids_into_array)->delete();
+            Toastr()->error("Selected Meetings Has Been Deleted",[],'Deleted');
+            return redirect()->back();
+        }
+        $search = $request->search;
+        $meetings = Meeting::when($search, function($query) use ($search){
+            $query->where('meeting_name' , 'LIKE','%'.$search.'%')
+                ->orWhere('meeting_host','LIKE','%'.$search.'%')
+                ->orWhere('meeting_status','LIKE','%'.$search.'%');
+        })->get();
+
+        // $reminder = explode('-',$meetings->meeting_reminder);
+        // return $reminder;
+        return view('meetings.index',compact('meetings','search'));
     }
 
   
@@ -23,6 +43,8 @@ class MeetingController extends Controller
         $accounts = Account::all();
         $contacts = Contact::all();
         $leads = Lead::all();
+
+        
         return view('meetings.create',compact('leads','accounts','contacts'));
     }
 
@@ -35,55 +57,109 @@ class MeetingController extends Controller
             'from' => 'required|date',
             'to' => 'required|date',
             'host' => 'required',
-            
+            'participants' => 'required',
+            'related_to' => 'required',
+            'meeting_reminder' => 'required',
+            'contacts' => 'array',
+            'accounts' => 'array',
+            'leads' => 'array',
+       ]);    
+
+       $contacts = $request->input('contacts',[]);
+       $accounts = $request->input('accounts',[]);
+       $leads = $request->input('leads',[]);
+       
+       $participants = array_merge($accounts,$leads,$contacts);
+       $participantsString = implode(', ',$participants);
+       
+       $meeting = Meeting::create([
+            'meeting_name' => $request->title,
+            'meeting_location' => $request->location,
+            'meeting_from' => $request->from,
+            'meeting_to' => $request->to,
+            'meeting_host' => $request->host,
+            'meeting_participants' => $request->participants,
+            'meeting_participants_name' => $participantsString,
+            'meeting_related_to' => $request->related_to,
+            'meeting_reminder' => $request->meeting_reminder,
+            'meeting_creator_id' => Auth::user()->id
        ]);
 
-        if($request->has('participants')){
-            switch ($request->participants) {
-                case 'contacts':
-                    $request->validate([
-                        'contacts' => 'required'
-                    ]);
-                    break;
-                case 'accounts':
-                    $request->validate([
-                        'accounts' => 'required'
-                    ]);
-                    break;
-                case 'leads':
-                    $request->validate([
-                        'leads' => 'required'
-                    ]);
-                    break;
-                default:
-                    dd("No Paricipants");
-                    break;
-               }
-        
-        }else{
-            dd('No Paricipants'); 
-        }
-       
-
-       
+       if($meeting){
+        Toastr()->success("meeting Has Been Created Succesfully");
+        return redirect()->route('meeting.index');
+       }
     }
 
     
     public function show(string $id)
     {
-        return view('meetings.show');
+        $meeting = Meeting::find($id);
+        return view('meetings.show',compact('meeting'));
     }
 
    
     public function edit(string $id)
     {
-        return view('meetings.edit');
+        $meeting = Meeting::find($id);
+        $accounts = Account::all();
+        $contacts = Contact::all();
+        $leads = Lead::all();
+        $meetingHasReminder = $meeting->meeting_reminder ?? '';
+        $meetingHasparticipantsName = explode(', ', $meeting->meeting_participants_name);
+        return view('meetings.edit',compact('accounts','leads','contacts','meeting','meetingHasReminder','meetingHasparticipantsName'));
     }
 
     
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'location' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date',
+            'host' => 'required',
+            'participants' => 'required',
+            'related_to' => 'required',
+            'meeting_reminder' => 'required',
+            'meeting_status' => 'required',
+            'contacts' => 'array',
+            'accounts' => 'array',
+            'leads' => 'array',
+        ]);
+       $meeting = Meeting::find($id);
+       if($meeting){
+
+
+        $contacts = $request->input('contacts',[]);
+       $accounts = $request->input('accounts',[]);
+       $leads = $request->input('leads',[]);
+       
+       $participants = array_merge($accounts,$leads,$contacts);
+       $participantsString = implode(', ',$participants);
+
+       $update =  $meeting->update([
+            'meeting_name' => $request->title,
+            'meeting_location' => $request->location,
+            'meeting_from' => $request->from,
+            'meeting_to' => $request->to,
+            'meeting_host' => $request->host,
+            'meeting_participants' => $request->participants,
+            'meeting_participants_name' => $participantsString,
+            'meeting_related_to' => $request->related_to,
+            'meeting_reminder' => $request->meeting_reminder,
+            'meeting_creator_id' => Auth::user()->id,
+            'meeting_status' => $request->meeting_status,
+        ]);
+
+        if($update){
+            Toastr()->success("Meeting Has Been Updated Succesfully");
+            return redirect()->route('meeting.index');
+        }else{
+            Toastr()->error("Meeting Has Not Been Updated");
+            return redirect()->back();
+        }
+       }
     }
 
     
