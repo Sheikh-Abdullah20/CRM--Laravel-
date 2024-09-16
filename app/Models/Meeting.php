@@ -16,12 +16,15 @@ class Meeting extends Model
 
 
     public function contacts(){
-        return $this->belongsTo(Contact::class, 'meeting_related_to_value','id');
+        return $this->belongsTo(Contact::class, 'meeting_participants_id','id');
     }
 
 
     public function leads(){
-        return $this->belongsTo(Lead::class, 'meeting_related_to_value','id');
+        return $this->belongsTo(Lead::class, 'meeting_participants_id','id');
+    }
+    public function accounts(){
+        return $this->belongsTo(Account::class, 'meeting_participants_id','id');
     }
 
     public function user(){

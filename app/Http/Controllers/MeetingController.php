@@ -71,6 +71,8 @@ class MeetingController extends Controller
        
        $participants = array_merge($accounts,$leads,$contacts);
        $participantsString = implode(', ',$participants);
+    //    return $participantsString;
+
        
        $meeting = Meeting::create([
             'meeting_name' => $request->title,
@@ -79,7 +81,7 @@ class MeetingController extends Controller
             'meeting_to' => $request->to,
             'meeting_host' => $request->host,
             'meeting_participants' => $request->participants,
-            'meeting_participants_name' => $participantsString,
+            'meeting_participants_id' => $participantsString,
             'meeting_related_to' => $request->related_to,
             'meeting_reminder' => $request->meeting_reminder,
             'meeting_creator_id' => Auth::user()->id
@@ -106,8 +108,9 @@ class MeetingController extends Controller
         $contacts = Contact::all();
         $leads = Lead::all();
         $meetingHasReminder = $meeting->meeting_reminder ?? '';
-        $meetingHasparticipantsName = explode(', ', $meeting->meeting_participants_name);
-        return view('meetings.edit',compact('accounts','leads','contacts','meeting','meetingHasReminder','meetingHasparticipantsName'));
+        $meetingHasparticipantsids= explode(', ', $meeting->meeting_participants_id);
+        // return $meetingHasparticipantsids;
+        return view('meetings.edit',compact('accounts','leads','contacts','meeting','meetingHasReminder','meetingHasparticipantsids'));
     }
 
     
@@ -131,13 +134,13 @@ class MeetingController extends Controller
        if($meeting){
 
 
-        $contacts = $request->input('contacts',[]);
+       $contacts = $request->input('contacts',[]);
        $accounts = $request->input('accounts',[]);
        $leads = $request->input('leads',[]);
        
        $participants = array_merge($accounts,$leads,$contacts);
        $participantsString = implode(', ',$participants);
-
+    //    return $participantsString;
        $update =  $meeting->update([
             'meeting_name' => $request->title,
             'meeting_location' => $request->location,
@@ -145,7 +148,7 @@ class MeetingController extends Controller
             'meeting_to' => $request->to,
             'meeting_host' => $request->host,
             'meeting_participants' => $request->participants,
-            'meeting_participants_name' => $participantsString,
+            'meeting_participants_id' => $participantsString,
             'meeting_related_to' => $request->related_to,
             'meeting_reminder' => $request->meeting_reminder,
             'meeting_creator_id' => Auth::user()->id,

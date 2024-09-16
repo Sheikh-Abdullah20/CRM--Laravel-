@@ -121,7 +121,7 @@ CRM - Update Meeting
                         <select class="custom-select" id="contacts" name="contacts[]" multiple size="10">
                             <option value="" hidden>Select Contacts</option>
                             @foreach($contacts as $contact)
-                            <option class="option" {{ in_array($contact->contact_name, $meetingHasparticipantsName)   ? 'selected' : '' }}  value="{{ $contact->contact_name}}">{{ $contact->contact_name }}</option>
+                            <option class="option" {{ in_array($contact->id, $meetingHasparticipantsids)   ? 'selected' : '' }}  value="{{ $contact->id}}">{{ $contact->contact_name }}</option>
                            @endforeach
                         </select>
                         
@@ -133,7 +133,7 @@ CRM - Update Meeting
                         <select class="custom-select" id="accounts" name="accounts[]" multiple size="10">
                             <option value="" hidden >Select Accounts</option>
                            @foreach($accounts as $account)
-                            <option class="option" {{ in_array($account->account_name, $meetingHasparticipantsName)  ? 'selected' : ''}} value="{{ $account->account_name }}">{{ $account->account_name }}</option>
+                            <option class="option" {{ in_array($account->id, $meetingHasparticipantsids)  ? 'selected' : ''}} value="{{ $account->id }}">{{ $account->account_name }}</option>
                            @endforeach
                         </select>
                         
@@ -145,7 +145,7 @@ CRM - Update Meeting
                         <select class="custom-select" id="leads" name="leads[]" multiple size="10">
                             <option value="" hidden>Select Leads</option>
                            @foreach($leads as $lead)
-                            <option class="option" {{ in_array($lead->first_name . ' ' . $lead->last_name, $meetingHasparticipantsName) ? 'selected' : '' }} value="{{ $lead->first_name . ' ' . $lead->last_name }}" >{{ $lead->first_name . ' ' . $lead->last_name }}</option>
+                            <option class="option" {{ in_array($lead->id, $meetingHasparticipantsids) ? 'selected' : '' }} value="{{$lead->id}}" >{{ $lead->first_name . ' ' . $lead->last_name }}</option>
                            @endforeach
                         </select>
                         

@@ -6,6 +6,9 @@ CRM - Meetings
 @endsection
 
 @section('content')
+
+
+
 <div class="d-flex justify-content-between">
     <h1>Meetings</h1>
 
@@ -110,10 +113,34 @@ CRM - Meetings
                                 </td>
 
                                 <td>
-                                   
-                                   
-                                {{ str_replace(', ', ' || ' , $meeting->meeting_participants_name) }}
+
+                                @php
+                                    $participantsId = explode(',', $meeting->meeting_participants_id);
+                                @endphp
                                 
+                                   
+                               @if($meeting->meeting_participants == 'contacts')
+                               @php
+                                   $contacts = \App\Models\Contact::whereIn('id',$participantsId)->get()
+                               @endphp
+
+                               @foreach ($contacts as  $contact)
+                               {{$contact->contact_name  }}
+                               @endforeach
+                               
+                               @elseif($meeting->meeting_participants == 'accounts') 
+                              
+                               @php
+                                   $accounts = \App\Models\Account::whereIn('id',$participantsId)->get()
+                               @endphp
+
+                               @foreach ($accounts as $account )
+                                   {{ $account->account_name }}
+                               @endforeach
+
+                               @elseif($meeting->meeting_participants == 'leads')
+                               {{ str_replace(', ', ' || ' , $meeting->leads->first_name . ' ' . $meeting->leads->last_name) }} 
+                                @endif
                                 </td>
 
                                 <td>
@@ -128,6 +155,9 @@ CRM - Meetings
 
                                     @elseif($meeting->meeting_status === 'Finished')
                                     <span class="border border-success p-1 rounded "style="font-size:10px"> {{ $meeting->meeting_status }}</span>
+
+                                    @elseif($meeting->meeting_status === 'Cancelled')
+                                    <span class="border border-danger p-1 rounded "style="font-size:10px"> {{ $meeting->meeting_status }}</span>
 
                                     @endif
                                 </td>

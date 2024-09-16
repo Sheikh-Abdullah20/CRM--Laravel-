@@ -118,7 +118,7 @@ CRM - Create Meeting
                         <select class="custom-select" id="contacts" name="contacts[]" multiple size="10">
                             <option value="" hidden>Select Contacts</option>
                            @foreach($contacts as $contact)
-                            <option class="option" value="{{ $contact->contact_name}}">{{ $contact->contact_name }}</option>
+                            <option class="option" value="{{ $contact->id}}">{{ $contact->contact_name }}</option>
                            @endforeach
                         </select>
                         
@@ -130,7 +130,7 @@ CRM - Create Meeting
                         <select class="custom-select" id="accounts" name="accounts[]" multiple size="10">
                             <option value="" hidden >Select Accounts</option>
                            @foreach($accounts as $account)
-                            <option class="option" value="{{ $account->account_name }}">{{ $account->account_name }}</option>
+                            <option class="option" value="{{ $account->id }}">{{ $account->account_name }}</option>
                            @endforeach
                         </select>
                         
@@ -142,7 +142,7 @@ CRM - Create Meeting
                         <select class="custom-select" id="leads" name="leads[]" multiple size="10">
                             <option value="" hidden>Select Leads</option>
                            @foreach($leads as $lead)
-                            <option class="option" value="{{ $lead->first_name . ' ' . $lead->last_name }}" >{{ $lead->first_name . ' ' . $lead->last_name }}</option>
+                            <option class="option" value="{{ $lead->id }}" >{{ $lead->first_name . ' ' . $lead->last_name }}</option>
                            @endforeach
                         </select>
                         

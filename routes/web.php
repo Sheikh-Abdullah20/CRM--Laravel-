@@ -6,9 +6,11 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\leadsController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\MeetingReminderController;
 use App\Http\Controllers\notificationControlController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -47,6 +49,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/contact/notification/mark-as-read/{id}',[notificationControlController::class, 'markAsRead'])->name('notificationMarkAsRead');
         Route::get('/contact/notification/delete/{id}',[notificationControlController::class, 'deleteNotification'])->name('deleteNotification');
         // Notification Control Controller Route End
+
+
+        // Meeting Reminder Routes Start
+        Route::get('meeting/reminder/accept/{id}',[MeetingReminderController::class,'accept'])->name('reminder_accept');
+        Route::get('meeting/reminder/denied/{id}',[MeetingReminderController::class,'denied'])->name('reminder_denied');
+        // Meeting Reminder Routes End
 
         // DownloadReport Csv Route Start
         Route::get('/download/lead/csv',[leadsController::class, 'leadCsv'])->name('lead.csv');

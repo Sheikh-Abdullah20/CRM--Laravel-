@@ -57,7 +57,7 @@ CRM - Create Contact
 
                     <div class="form-group">
                         <label for="account_id">Account Name</label>
-                        <select name="account_id" id="account_id" class="form-select">
+                        <select name="account_id" id="account_id" class="custom-select">
                             <option value="" hidden>Select Account</option>
                             @foreach ($accounts as $account )
                                 <option value="{{ $account->id }}">{{ $account->account_name }}</option>

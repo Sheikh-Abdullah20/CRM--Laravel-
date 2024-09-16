@@ -65,7 +65,7 @@ CRM - Deal Create
 
                     <div class="form-group">
                         <label for="deal_status">Deal Status</label>
-                        <select name="deal_status" id="deal_status" class="form-select">
+                        <select name="deal_status" id="deal_status" class="custom-select">
                             <option value="" hidden>Select Status</option>
                             <option value="Not-Started" >Not-Started</option>
                             <option value="In-Progress" >In-Progress</option>
@@ -83,7 +83,7 @@ CRM - Deal Create
 
                     <div class="form-group">
                         <label for="account_id">Account Name</label>
-                        <select name="account_id" id="account_id" class="form-select">
+                        <select name="account_id" id="account_id" class="custom-select">
                             <option value="" hidden>Select Contact</option>
                             @foreach($accounts as $account )
                                 <option value="{{ $account->id }}">{{ $account->account_name }}</option>
@@ -98,7 +98,7 @@ CRM - Deal Create
 
                     <div class="form-group">
                         <label for="contact_id">Contact Name</label>
-                       <select name="contact_id" id="contact_id" class="form-select">
+                       <select name="contact_id" id="contact_id" class="custom-select">
                         <option value="" hidden>Select Contact</option>
                         @foreach($contacts as $contact )
                             <option value="{{ $contact->id }}">{{ $contact->contact_name }}</option>

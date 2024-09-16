@@ -34,12 +34,47 @@ CRM - Show Meeting
                             </tr>
                         </thead>
                         <tbody>
+
+                            @php
+                                $participantsId = explode(',',$meeting->meeting_participants_id);    
+                            @endphp
+
                             <tr>
                                 <td>{{ $meeting->meeting_name }}</td>
                                 <td>{{ $meeting->meeting_location }}</td>
                                 <td>{{ $meeting->meeting_from }}</td>
                                 <td>{{ $meeting->meeting_to }}</td>
-                                <td>{{ $meeting->meeting_participants_name }}</td>
+                                <td>
+                                    @if($meeting->meeting_participants === 'contacts')
+
+                                    @php
+                                        $contacts = \App\Models\Contact::whereIn('id',$participantsId)->get();    
+                                    @endphp
+                                            @foreach($contacts as $contact)
+                                                {{ $contact->contact_name }}
+                                            @endforeach
+
+
+
+                                     @elseif($meeting->meeting_participants === 'accounts')
+
+                                    @php
+                                        $accounts = \App\Models\Account::whereIn('id',$participantsId)->get();    
+                                    @endphp
+                                            @foreach($accounts as $account)
+                                                {{ $account->account_name }}
+                                            @endforeach
+
+                                    @elseif($meeting->meeting_participants === 'accounts')
+
+                                    @php
+                                         $leads = \App\Models\Lead::whereIn('id',$participantsId)->get();    
+                                    @endphp
+                                            @foreach($leads as $lead)
+                                                {{ $lead->first_name . ' ' . $last_name }}
+                                            @endforeach        
+                                    @endif
+                                </td>
                                 <td>{{ $meeting->meeting_host }}</td>
                                 <td>{{ $meeting->meeting_related_to }}</td>
                                 <td>
@@ -51,6 +86,9 @@ CRM - Show Meeting
 
                                     @elseif($meeting->meeting_status === 'Finished')
                                     <span class="border border-success p-1 rounded "style="font-size:10px"> {{ $meeting->meeting_status }}</span>
+
+                                    @elseif($meeting->meeting_status === 'Cancelled')
+                                    <span class="border border-danger p-1 rounded "style="font-size:10px"> {{ $meeting->meeting_status }}</span>
 
                                     @endif
                                 </td>

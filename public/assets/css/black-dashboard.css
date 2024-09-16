@@ -2311,6 +2311,10 @@ textarea.form-control.is-valid {
   background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%2332325d' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2300f2c3' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") transparent no-repeat center right 1.7rem/calc(0.714286em + 0.5rem) calc(0.714286em + 0.5rem);
 }
 
+option {
+  color: rgb(187, 146, 146)
+}
+
 .was-validated .custom-select:valid:focus,
 .custom-select.is-valid:focus {
   border-color: #00f2c3;
@@ -3680,6 +3684,9 @@ input[type="button"].btn-block {
   margin: 0.125rem 0 0;
   font-size: 0.875rem;
   color: #525f7f;
+
+ 
+  overflow-y: auto;
   text-align: left;
   list-style: none;
   background-color: #ffffff;
@@ -18510,10 +18517,6 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   display: inline-block;
 }
 
-.modal.show .modal-dialog {
-  -webkit-transform: translate(0, 30%);
-  transform: translate(0, 30%);
-}
 
 code {
   color: #f3a4b5;

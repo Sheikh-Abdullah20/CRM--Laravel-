@@ -63,7 +63,7 @@ CRM - Deal Edit
 
                     <div class="form-group">
                         <label for="deal_status">Deal Status</label>
-                        <select name="deal_status" id="deal_status" class="form-select">
+                        <select name="deal_status" id="deal_status" class="custom-select">
                             <option value="{{ $deal->deal_status }}" hidden>{{ $deal->deal_status }}</option>
                             <option value="Not-Started" >Not-Started</option>
                             <option value="In-Progress" >In-Progress</option>

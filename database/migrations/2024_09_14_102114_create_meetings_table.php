@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('meeting_to');
             $table->string('meeting_host');
             $table->string('meeting_participants');
-            $table->string('meeting_participants_name');
+            $table->string('meeting_participants_id');
             $table->string('meeting_related_to');
             $table->string('meeting_status')->default("Waiting");
             $table->string('meeting_reminder');
