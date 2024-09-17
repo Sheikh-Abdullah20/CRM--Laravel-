@@ -305,7 +305,6 @@
                   @endif
                   </li>
 
-
                   @endif
                   @endforeach
                 </ul>
@@ -355,8 +354,7 @@
       <!-- End Navbar -->
       <div class="content">
 
-        {{-- Modal --}}
-
+        {{-- Modal For Reminder Start Meeting Start --}}
         @php
           $reminders = \App\Models\Reminder::where('is_attended','false')->get();
         @endphp
@@ -409,6 +407,7 @@
               </b></p>
 
                 @endif
+
                 <img src="{{ asset('assets/img/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2lt.jpg') }}" alt="">
               </div>
               <div class="modal-footer">
@@ -421,8 +420,78 @@
         @endforeach
 
       @endif
+        {{-- Modal For Reminder Start Meeting End --}}
 
-        {{-- Modal --}}
+
+        {{-- Modal For Reminder End Meeting  Start--}}
+
+        @php
+        $reminders = \App\Models\Reminder::where('end_meeting_permission','pending')->get();
+      @endphp
+    
+
+    @if($reminders->isNotEmpty())
+      @foreach ($reminders as $reminder )
+
+      @php
+        $participantsId = explode(',', $reminder->meetings->meeting_participants_id);  
+      @endphp
+
+      <div class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog my-0 ">
+          <div class="modal-content p-3">
+            <div class="modal-header d-flex justify-content-center">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Meeting End Reminder</h1>
+            </div>
+            <div class="modal-body ">
+              <h4 class="text-dark">Did You Finish The Meeting?</h4>
+              <hr>
+              <p>Meeting Host: <b>{{ $reminder->meetings->meeting_host }}</b></p>
+              <p>Meeting participants From : <b> {{ $reminder->meetings->meeting_participants }} </b></p>
+              <p>Meeting Participants Name : <b> 
+              @if($reminder->meetings->meeting_participants === 'contacts')  
+              @php
+                $contacts = \App\Models\Contact::whereIn('id',$participantsId)->get();  
+              @endphp
+              @foreach ($contacts as $contact )
+                  {{$contact->contact_name }}
+              @endforeach
+             </b></p>
+
+             @elseif($reminder->meetings->meeting_participants === 'accounts')  
+              @php
+                $accounts = \App\Models\Account::whereIn('id',$participantsId)->get();  
+              @endphp
+              @foreach ($accounts as $account )
+                  {{$account->account_name }}
+              @endforeach
+             </b></p>
+
+             @elseif($reminder->meetings->meeting_participants === 'leads')  
+             @php
+               $leads = \App\Models\Lead::whereIn('id',$participantsId)->get();  
+             @endphp
+             @foreach ($leads as $lead )
+                 {{$lead->first_name . ' ' . $lead->last_name }}
+             @endforeach
+            </b></p>
+
+              @endif
+
+              <img src="{{ asset('assets/img/end meeting.jpg') }}" alt="">
+            </div>
+            <div class="modal-footer">
+              <a href="{{ route('reminder_end_notyet',$reminder) }}" class="btn btn-secondary" >Not Yet</a>
+              <a href="{{ route('reminder_end_finished',$reminder) }}" class="btn btn-primary">Mark As Finished </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      @endforeach
+
+    @endif
+
+        {{-- Modal For Reminder End Meeting End --}}
 
       {{-- {{ Content }} --}}
       @yield('content')

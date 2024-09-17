@@ -9,13 +9,13 @@
 </head>
 <body>
     <h1> Meeting Reminder - (  {{ $meeting->meeting_name }} ) </h1>
-    <p>This Mail is to Inform You Your Meeting Is Going To Start Be Prepare And Be On Time </p>
+    <p>This Mail is to Inform You Your Meeting Has Been Started  </p>
 
     <h2>Meeting Host : <b>{{ $meeting->meeting_host }}</b> </h2>
 
     <h3>Meeting Participants</h3>
     @php
-        $participantsId = explode(',',$meeting->meeting_participants_id);
+        $participantsId = explode(',', $meeting->meeting_participants_id);
     @endphp
 
     @if($meeting->meeting_participants  === 'contacts')
@@ -23,7 +23,7 @@
             $contacts = \App\Models\Contact::whereIn('id',$participantsId)->get();
         @endphp
         @foreach($contacts as $contact)
-        <h3>{{ $contact->contact_name }}</h3>
+        <p>{{ $contact->contact_name }}</p>
         @endforeach
 
 
@@ -42,7 +42,7 @@
             $leads = \App\Models\Lead::whereIn('id',$participantsId)->get();
         @endphp
         @foreach($leads as $lead)
-        <p>{{ $lead->first_name . ' ' . $lead->last_name }}</p>
+        <h3>{{ $lead->first_name . ' ' . $lead->last_name }}</h3>
         @endforeach
     @endif
     <hr>

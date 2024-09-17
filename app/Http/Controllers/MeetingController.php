@@ -6,9 +6,11 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Lead;
 use App\Models\Meeting;
+use App\Notifications\MeetingNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class MeetingController extends Controller
 {
@@ -88,6 +90,8 @@ class MeetingController extends Controller
        ]);
 
        if($meeting){
+        $message = "Meeting Has Been Created";
+        Notification::send(Auth::user(), new MeetingNotification($meeting,$message));
         Toastr()->success("meeting Has Been Created Succesfully");
         return redirect()->route('meeting.index');
        }
@@ -156,6 +160,8 @@ class MeetingController extends Controller
         ]);
 
         if($update){
+            $message = "Meeting Has Been Updated";
+            Notification::send(Auth::user(), new MeetingNotification($meeting,$message));
             Toastr()->success("Meeting Has Been Updated Succesfully");
             return redirect()->route('meeting.index');
         }else{
@@ -165,6 +171,65 @@ class MeetingController extends Controller
        }
     }
 
+
+    public function MeetingCsv(){
+        $meetings = Meeting::all();
+
+        $filename =  "Meeting_Report" . ' - '  . time()  . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachments; filename="' . $filename . '"'
+        ];
+        $generate = function () use ($meetings){
+            $file = fopen("php://output",'w');
+
+            fputcsv($file,[
+                'Meeting Name', 'Meeting Location', 'Meeting From' , 'Meeting To' , 'Meeting Host' , 'Meeting Participant Group', 'Meeting Participants Name' , 'Meeting Related To' , 'Meeting Status' , 'Meeting Reminder', 'Meeting Reminder Status' , 'Meeting Attended' ,'Meeting Creator' , 'Meeting Created At'
+            ]);
+
+            foreach ($meetings as $meeting) {
+     
+                $participants = [];
+            
+                if ($meeting->meeting_participants === 'contacts' && $meeting->contacts) {
+                    $participants = $meeting->contacts->pluck('contact_name')->toArray();
+                } elseif ($meeting->meeting_participants === 'accounts' && $meeting->accounts) {
+                    $participants = $meeting->accounts->pluck('account_name')->toArray();
+                } elseif ($meeting->meeting_participants === 'leads' && $meeting->leads) {
+                    $participants = $meeting->leads->map(function($lead) {
+                        return $lead->first_name . ' ' . $lead->last_name;
+                    })->toArray();
+                }
+
+                if (empty($participants)) {
+                    $participants[] = 'No Participants Found';
+                }
+            
+ 
+                $participantsString = implode(', ', $participants);
+                fputcsv($file,[
+                    $meeting->meeting_name,
+                    $meeting->meeting_location,
+                    $meeting->meeting_from,
+                    $meeting->meeting_to,
+                    $meeting->meeting_host,
+                    $meeting->meeting_participants,
+                     $participantsString,
+                    $meeting->meeting_related_to,
+                    $meeting->meeting_status,
+                    $meeting->meeting_reminder,
+                    $meeting->meeting_reminder_status,
+                    $meeting->meeting_attended,
+                    $meeting->meeting_creator_id,
+                    $meeting->created_at,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($generate,200,$headers);
+    }
     
     public function destroy(string $id)
     {

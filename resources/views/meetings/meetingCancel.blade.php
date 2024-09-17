@@ -8,8 +8,8 @@
     <link href="{{ asset('assets/css/black-dashboard.css?v=1.0.0') }}" rel="stylesheet">
 </head>
 <body>
-    <h1> Meeting Reminder - (  {{ $meeting->meeting_name }} ) </h1>
-    <p>This Mail is to Inform You Your Meeting Is Going To Start Be Prepare And Be On Time </p>
+    <h1> Meeting cancellation Mail -> (  {{ $meeting->meeting_name }} ) </h1>
+    <p>This Mail is to Inform You Your Meeting Has Been Cancelled </p>
 
     <h2>Meeting Host : <b>{{ $meeting->meeting_host }}</b> </h2>
 

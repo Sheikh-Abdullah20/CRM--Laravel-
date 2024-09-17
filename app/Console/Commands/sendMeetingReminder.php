@@ -43,7 +43,6 @@ class sendMeetingReminder extends Command
             Log::info("Meeting Start Time: " . $meeting->meeting_from);
             Log::info("Reminder Time (minutes): " . $reminderTime);
             Log::info("Current Time: " . Carbon::now());
-            Log::info("Reminder Trigger Time: " . Carbon::parse($meeting->meeting_from)->subMinutes($reminderTime));
             if(Carbon::parse($meeting->meeting_from)->subMinutes($reminderTime)->lte(now()) ){
 
                 $participantsEmails = [];

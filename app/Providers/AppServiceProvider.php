@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\EndMeetingReminder;
 use App\Console\Commands\meetingAttendReminder;
 use App\Console\Commands\sendMeetingReminder;
 use Illuminate\Console\Scheduling\Schedule;
@@ -24,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $schedule->command(sendMeetingReminder::class)->everyMinute();
         $schedule->command(meetingAttendReminder::class)->everyMinute();
+        $schedule->command(EndMeetingReminder::class)->everyMinute();
     }
 }

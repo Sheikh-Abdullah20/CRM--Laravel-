@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
             $table->string('Message');
-            $table->integer('meeting_id');
+            $table->foreignId('meeting_id')->constrained('meetings')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('is_attended')->default('false');
+            $table->string('end_meeting_status')->default('false');
+            $table->string('end_meeting_permission')->default('no-permission');
             $table->timestamps();
         });
     }

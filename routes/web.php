@@ -56,11 +56,18 @@ Route::middleware('auth')->group(function () {
         Route::get('meeting/reminder/denied/{id}',[MeetingReminderController::class,'denied'])->name('reminder_denied');
         // Meeting Reminder Routes End
 
+
+           // Meeting end Reminder Routes Start
+           Route::get('meeting/reminder/finished/{id}',[MeetingReminderController::class,'finished'])->name('reminder_end_finished');
+           Route::get('meeting/reminder/notyet/{id}',[MeetingReminderController::class,'notyet'])->name('reminder_end_notyet');
+           // Meeting end Reminder Routes End
+
         // DownloadReport Csv Route Start
         Route::get('/download/lead/csv',[leadsController::class, 'leadCsv'])->name('lead.csv');
         Route::get('/download/account/csv',[AccountController::class, 'AccountCsv'])->name('account.csv');
         Route::get('/download/deal/csv',[DealController::class, 'DealCsv'])->name('deal.csv');
         Route::get('/download/contact/csv',[ContactController::class, 'ContactCsv'])->name('contact.csv');
+        Route::get('/download/meeting/csv',[MeetingController::class, 'MeetingCsv'])->name('meeting.csv');
         // DownloadReport Csv Route Start ends
         
     // Resource Routes End
