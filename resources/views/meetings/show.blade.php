@@ -6,7 +6,7 @@ CRM - Show Meeting
 @endsection
 
 @section('content')
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between align-items-center">
     <h1>Meeting Show</h1>
 
     <a href="{{ route('meeting.index') }}" class="btn">Back</a>

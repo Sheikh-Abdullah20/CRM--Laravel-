@@ -76,6 +76,13 @@
             </a>
           </li>
 
+          <li class="{{ request()->routeIs('task.index') ? 'active' : '' }}">
+            <a href="{{ route('task.index') }}">
+              <i class="tim-icons icon-bulb-63"></i>
+              <p>Tasks</p>
+            </a>
+          </li>
+
           <li class="{{request()->routeIs('meeting.index') ? 'active' : ''}}">
             <a href="{{ route('meeting.index') }}">
               <i class="tim-icons icon-world"></i>
@@ -91,12 +98,7 @@
           </li>
           
         
-           {{-- <li>
-            <a href="./rtl.html">
-              <i class="tim-icons icon-world"></i>
-              <p>RTL Support</p>
-            </a>
-          </li> --}}
+          
         </ul>
       </div>
     </div>
@@ -120,12 +122,8 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
           <div class="collapse navbar-collapse" id="navigation">
-            <ul class="navbar-nav ml-auto">
-              <li class="search-bar input-group">
-                <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i class="tim-icons icon-zoom-split" ></i>
-                  <span class="d-lg-none d-md-block">Search</span>
-                </button>
-              </li>
+            <ul class="navbar-nav ml-auto align-items-center">
+              
               <li class="dropdown nav-item">
                 <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
                   <div class="{{ auth()->user()->notifications->isNotEmpty() && auth()->user()->unreadNotifications->isNotEmpty() ? 'notification' : '' }} d-none d-lg-block d-xl-block"></div>
@@ -134,10 +132,8 @@
                     Notifications
                   </p>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-right dropdown-navbar align-content-center">
+                <ul class="dropdown-menu dropdown-menu-right dropdown-navbar ">
 
-
-              
                   @foreach(auth()->user()->notifications as $notification)
 
                   @if(!empty(($notification->data['deal_id'])))
@@ -305,9 +301,47 @@
                   @endif
                   </li>
 
+                  @elseif(!empty($notification->data['task_id']))
+                  <li class="nav-link d-flex justify-content-around">
+                    <a href="{{ route('deleteNotification',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x mt-3 p-0" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                      </svg>
+                    </a>
+
+                    @php
+                      $AccountExists = \App\Models\Task::find($notification->data['task_id']);  
+                    @endphp
+
+                    @if($AccountExists)
+                    <a href="{{  route('task.show', $notification->data['task_id'])  }}" class="nav-item dropdown-item">{{ $notification->data['message'] }}</a> 
+                    @else
+                    <span class="nav-item dropdown-item">{{ $notification->data['message'] }}</span> 
+                    @endif
+
+                    @if(!$notification->read_at)
+                    <a href="{{ route('notificationMarkAsRead',$notification->id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="mt-2" viewBox="0 0 24 24" width="24px" height="24px">
+                        <path d="M20 4H4C2.897 4 2 4.897 2 6v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 5.333-8-5.333V6h16zM4 18V8.264l7.28 4.854a1.001 1.001 0 0 0 1.439 0L20 8.264V18H4z"/>
+                    </svg>
+                    </a>
+
+                    @else
+                    <svg xmlns="http://www.w3.org/2000/svg" class=" mt-2 " viewBox="0 0 24 24" width="24px" height="24px">
+                      <path d="M12 12.713L.015 6.013 12 1.75l11.985 4.263L12 12.713zm0 2.285l12-6.856V18.5c0 1.379-1.121 2.5-2.5 2.5h-19C1.121 21 0 19.879 0 18.5V8.142l12 6.856z"/>
+                  </svg>
+                  @endif
+                  </li>
+
                   @endif
                   @endforeach
+                  @if(auth()->user()->notifications->isEmpty())
+                  <li class="d-flex justify-content-center align-content-center ">
+                    <span class="text-dark ">No Notification</span>
+                  </li>
+                  @endif
                 </ul>
+               
               </li>
               <li class="dropdown nav-item">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -407,8 +441,12 @@
               </b></p>
 
                 @endif
+                <div class="row">
+                  <div class="col-md-12 d-flex justify-content-center">
+                    <img src="{{ asset('assets/img/start meeting.jpg')}}" style="width: 200px">
+                </div>
+              </div>  
 
-                <img src="{{ asset('assets/img/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2lt.jpg') }}" alt="">
               </div>
               <div class="modal-footer">
                 <a href="{{ route('reminder_denied',$reminder) }}" class="btn btn-secondary" >Nah.. Cancel it</a>
@@ -477,8 +515,11 @@
             </b></p>
 
               @endif
-
-              <img src="{{ asset('assets/img/end meeting.jpg') }}" alt="">
+              <div class="row">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <img src="{{ asset('assets/img/end meeting.jpg') }}" alt="" style="width: 200px">
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <a href="{{ route('reminder_end_notyet',$reminder) }}" class="btn btn-secondary" >Not Yet</a>
@@ -492,6 +533,47 @@
     @endif
 
         {{-- Modal For Reminder End Meeting End --}}
+
+
+        {{-- Modal For Task Reminder Start --}}
+
+        @php
+        $tasks = \App\Models\Task::where('reminder_sent','true')->get();
+      @endphp
+
+        @if($tasks->isNotEmpty())
+      @foreach ($tasks as $task )
+
+      <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog my-0 ">
+          <div class="modal-content p-3">
+            <div class="modal-header d-flex justify-content-center">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Task Reminder</h1>
+            </div>
+            <div class="modal-body ">
+              <h4 class="text-dark">Do You Remember You Have Task</h4>
+              <hr>
+              <p>Task Subject: <b>{{ $task->subject }}</b></p>
+              <p>Task Related To : <b> {{ $task->related_to }} </b></p>
+              <p>Task Owner :  <b> {{ $task->task_owner }} </b> 
+ 
+              <div class="row">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <img src="{{ asset('assets/img/task.jpg') }}" alt="" style="width: 200px">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+              <a href="{{ route('task.reminder.okay',$task) }}" class="btn btn-warning">Okay</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      @endforeach
+
+    @endif
+
+        {{-- Modal For Task Reminder End --}}
 
       {{-- {{ Content }} --}}
       @yield('content')
@@ -533,9 +615,6 @@
   <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
   <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
   <script src="{{ asset('assets/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
-  <!--  Google Maps Plugin    -->
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
   <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
   <!--  Notifications Plugin    -->
@@ -545,15 +624,16 @@
   <script src="{{ asset('assets/demo/demo.js') }}"></script>
  
   <script>
+  
     $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
-
-    });
+        demo.initDashboardPageCharts();
+      });
+    
   </script>
 
 <script src="{{ asset('assets/js/toastr.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -561,6 +641,12 @@
     const triggerButton = document.getElementById('mymodal');
     if (triggerButton) {
       const modal = new bootstrap.Modal(document.getElementById('mymodal'));
+      modal.show();
+    }
+
+    const button = document.getElementById('taskModal');
+    if (button) {
+      const modal = new bootstrap.Modal(document.getElementById('taskModal'));
       modal.show();
     }
   });

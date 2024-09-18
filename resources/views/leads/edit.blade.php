@@ -6,7 +6,7 @@ CRM - Lead Edit
 
 @section('content')
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between align-items-center">
     <h1>Lead - Edit</h1>
     <a href="{{ route('lead.index') }}" class="btn">Back</a>
 </div>

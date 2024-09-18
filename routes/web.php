@@ -9,7 +9,9 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\MeetingReminderController;
 use App\Http\Controllers\notificationControlController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -36,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/contact',ContactController::class);
         Route::resource('/deal',DealController::class);
         Route::resource('/meeting',MeetingController::class);
+        Route::resource('/task',TaskController::class);
         // Leads Route End
 
 
@@ -62,12 +65,18 @@ Route::middleware('auth')->group(function () {
            Route::get('meeting/reminder/notyet/{id}',[MeetingReminderController::class,'notyet'])->name('reminder_end_notyet');
            // Meeting end Reminder Routes End
 
+
+        //    Task Reminder Route Start
+        Route::get('task/reminder/okay/{id}',[TaskController::class, 'okay'])->name('task.reminder.okay');
+        //    Task Reminder Route  End
+
         // DownloadReport Csv Route Start
         Route::get('/download/lead/csv',[leadsController::class, 'leadCsv'])->name('lead.csv');
         Route::get('/download/account/csv',[AccountController::class, 'AccountCsv'])->name('account.csv');
         Route::get('/download/deal/csv',[DealController::class, 'DealCsv'])->name('deal.csv');
         Route::get('/download/contact/csv',[ContactController::class, 'ContactCsv'])->name('contact.csv');
         Route::get('/download/meeting/csv',[MeetingController::class, 'MeetingCsv'])->name('meeting.csv');
+        Route::get('/download/task/csv',[TaskController::class,  'taskCsv'])->name('task.csv');
         // DownloadReport Csv Route Start ends
         
     // Resource Routes End

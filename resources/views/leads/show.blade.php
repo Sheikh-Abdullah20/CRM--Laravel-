@@ -6,7 +6,7 @@ CRM - Lead Show
 
 @section('content')
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between align-items-center">
     <h1>Lead Show</h1>
     <a href="{{ route('lead.index') }}" class="btn">Back</a>
 </div>
@@ -21,23 +21,23 @@ CRM - Lead Show
 
                 <div class="form-group">
                     <label for="first_name">First Name</label>
-                    <input type="text" value="{{ $lead->first_name }}" class="form-control" id="first_name" readonly>
+                    <input type="text" value="{{ $lead->first_name }}" class="form-control text-light" id="first_name" readonly>
                 </div>
                 <div class="form-group">
                     <label for="last_name">Last Name</label>
-                    <input type="text" value="{{ $lead->last_name }}" class="form-control" id="last_name" readonly>
+                    <input type="text" value="{{ $lead->last_name }}" class="form-control text-light" id="last_name" readonly>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="text" value="{{ $lead->last_name }}" class="form-control" id="email" readonly>
+                    <input type="text" value="{{ $lead->last_name }}" class="form-control text-light" id="email" readonly>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="text" value="{{ $lead->phone }}" class="form-control" id="phone" readonly>
+                    <input type="text" value="{{ $lead->phone }}" class="form-control text-light" id="phone" readonly>
                 </div>
                 <div class="form-group">
                     <label for="Company">Company</label>
-                    <input type="text" value="{{ $lead->company }}" class="form-control" id="Company" readonly>
+                    <input type="text" value="{{ $lead->company }}" class="form-control text-light" id="Company" readonly>
                 </div>
 
                 <div class="form-group my-2">

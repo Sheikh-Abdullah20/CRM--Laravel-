@@ -22,6 +22,8 @@ class ContactController extends Controller
            $contact =  Contact::whereIn('id' , $id_into_array)->delete();
            
            if($contact){
+            $message = "Contacts Has Been Deleted";
+            $notification = Notification::send(Auth::user(), new contactNotification($contact,$message));
                Toastr()->error("Selected Contacts Has Been Successfully Deleted",[],"Deleted");
                return redirect()->back();
            }else{
@@ -63,6 +65,8 @@ class ContactController extends Controller
         $contact = Contact::create($valdiatedRequest);
 
         if($contact){
+            $message = "Contact Has Been Created";
+            $notification = Notification::send(Auth::user(), new contactNotification($contact,$message));
             Toastr()->success('Contact Has Been Created Successfully');
             return redirect()->route('contact.index');
         }else{
@@ -102,6 +106,8 @@ class ContactController extends Controller
         $update =  $contact->update($validatedRequest);
 
            if($update){
+            $message = "Contact Has Been Updated";
+            $notification = Notification::send(Auth::user(), new contactNotification($contact,$message));
             Toastr()->success('Contact Has Been Updated Successfully');
             return redirect()->route('contact.index');
            }else{

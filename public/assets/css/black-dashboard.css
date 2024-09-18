@@ -1655,7 +1655,9 @@ pre code {
   border-bottom: 0.125rem solid #e3e3e3;
 }
 
-
+.table tbody+tbody {
+  border-top: 0.125rem solid #e3e3e3;
+}
 
 .table-sm th,
 .table-sm td {
@@ -2087,8 +2089,6 @@ pre code {
   transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-
-
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -2309,10 +2309,6 @@ textarea.form-control.is-valid {
   border-color: #00f2c3;
   padding-right: calc((1em + 1rem) * 3 / 4 + 1.7rem);
   background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%2332325d' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.7rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2300f2c3' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") transparent no-repeat center right 1.7rem/calc(0.714286em + 0.5rem) calc(0.714286em + 0.5rem);
-}
-
-option {
-  color: rgb(187, 146, 146)
 }
 
 .was-validated .custom-select:valid:focus,
@@ -3684,8 +3680,7 @@ input[type="button"].btn-block {
   margin: 0.125rem 0 0;
   font-size: 0.875rem;
   color: #525f7f;
-
- 
+  height: 8rem;
   overflow-y: auto;
   text-align: left;
   list-style: none;
@@ -16432,7 +16427,7 @@ img {
 
   .navbar .caret {
     position: absolute;
-    left: 89%;
+    left: 80%;
     top: 55%;
     margin-left: 0;
   }
@@ -16515,6 +16510,7 @@ a:focus {
 h1,
 .h1 {
   line-height: 1.05;
+  margin-bottom: 30px;
 }
 
 h1 small,
@@ -17021,7 +17017,7 @@ table.tablesorter thead tr .headerSortDown {
   z-index: 1031;
   border-radius: 8px 0 0 8px;
   text-align: center;
-  top: 90px;
+  top: 130px;
 }
 
 .fixed-plugin li>a,
@@ -18517,6 +18513,10 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   display: inline-block;
 }
 
+.modal.show .modal-dialog {
+  -webkit-transform: translate(0, 30%);
+  transform: translate(0, 30%);
+}
 
 code {
   color: #f3a4b5;
@@ -19059,6 +19059,7 @@ code {
 .form-control[readonly],
 fieldset[disabled] .form-control {
   background-color: #1d253b;
+  color: #344675;
   cursor: not-allowed;
 }
 

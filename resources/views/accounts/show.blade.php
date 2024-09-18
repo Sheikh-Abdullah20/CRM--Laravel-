@@ -5,7 +5,7 @@ CRM - Show Account
 @endsection
 
 @section('content')
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between align-items-center">
     <h1>Account Details</h1>
 
     <a href="{{ route('account.index') }}" class="btn">Back</a>
