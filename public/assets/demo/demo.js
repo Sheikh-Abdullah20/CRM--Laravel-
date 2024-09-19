@@ -358,7 +358,7 @@ demo = {
     gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
 
     var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+      labels: chartMeeting.labels,
       datasets: [{
         label: "Data",
         fill: true,
@@ -374,7 +374,7 @@ demo = {
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
         pointRadius: 4,
-        data: [80, 100, 70, 80, 120, 80],
+        data: chartMeeting.data,
       }]
     };
 
@@ -394,9 +394,9 @@ demo = {
     gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
 
     var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
+      labels: chartLead.labels,
       datasets: [{
-        label: "My First dataset",
+        label: "Leads",
         fill: true,
         backgroundColor: gradientStroke,
         borderColor: '#00d6b4',
@@ -410,7 +410,7 @@ demo = {
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
         pointRadius: 4,
-        data: [90, 27, 60, 12, 80],
+        data: chartLead.data,
       }]
     };
 
@@ -423,8 +423,6 @@ demo = {
 
 
 
-    var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
 
 
     var ctx = document.getElementById("chartBig1").getContext('2d');
@@ -437,9 +435,9 @@ demo = {
     var config = {
       type: 'line',
       data: {
-        labels: chart_labels,
+        labels: chartDeal.labels,
         datasets: [{
-          label: "My First dataset",
+          label: "My Deals",
           fill: true,
           backgroundColor: gradientStroke,
           borderColor: '#d346b1',
@@ -453,7 +451,7 @@ demo = {
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
           pointRadius: 4,
-          data: chart_data,
+          data: chartDeal.data,
         }]
       },
       options: gradientChartOptionsConfigurationWithTooltipPurple
@@ -492,15 +490,15 @@ demo = {
 
 
     var myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       responsive: true,
       legend: {
-        display: false
+        display: true
       },
       data: {
-        labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+        labels: chartTask.labels,
         datasets: [{
-          label: "Countries",
+          label: "Tasks",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -508,7 +506,7 @@ demo = {
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-          data: [53, 20, 10, 80, 100, 45],
+          data: chartTask.data,
         }]
       },
       options: gradientBarChartConfiguration
