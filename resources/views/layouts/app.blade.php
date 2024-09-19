@@ -358,9 +358,9 @@
                     Log out
                   </p>
                 </a>
-                <ul class="dropdown-menu dropdown-navbar">
+                <ul class="dropdown-menu dropdown-navbar" style="height: auto">
                   <li class="nav-link"><a href="{{ route('profile.edit') }}" class="nav-item dropdown-item">Profile</a></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Settings</a></li>
+                 
                   <li class="dropdown-divider"></li>
                   <form action="{{ route('logout') }}" method="POST">
                     @csrf
