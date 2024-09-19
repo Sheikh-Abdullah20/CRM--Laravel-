@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\guestController;
 use App\Http\Controllers\leadsController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\MeetingReminderController;
@@ -21,10 +22,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/',[guestController::class, 'index'])->name('home');
+
+// Guest Queries Route Start
+Route::post('/guest/queries',[guestController::class, 'queries'])->name('guest.queries');
+// Guest Queries Route End
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard',[AdminController::class , 'index'] )->name('dashboard');
