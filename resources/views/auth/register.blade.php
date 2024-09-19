@@ -13,7 +13,7 @@ CRM - Login
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="flex justify-content-center">
+                        <div class="d-flex justify-content-center">
                          <x-application-logo style="width: 50px; fill:white"/>
                         </div>
                      </div>

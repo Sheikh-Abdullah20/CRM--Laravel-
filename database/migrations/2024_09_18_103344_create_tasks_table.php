@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('reminder')->default('false');
             $table->string('reminder_send')->default('false');
             $table->dateTime('reminder_time')->nullable();
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

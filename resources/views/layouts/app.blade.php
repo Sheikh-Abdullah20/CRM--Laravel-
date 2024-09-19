@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
   <link href="{{ asset('assets/css/toastr.css') }}" rel="stylesheet"/>
+  
 
 
   <!-- Nucleo Icons -->
@@ -33,12 +34,12 @@
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
     -->
       <div class="sidebar-wrapper">
-        <div class="logo">
-          <a href="javascript:void(0)" class="simple-text logo-mini">
+        <div class="logo d-flex justify-content-between align-items-center ">
+          <a href="{{ route('dashboard') }}" class="simple-text logo-mini">
            CRM
           </a>
-          <a href="javascript:void(0)" class="simple-text logo-normal">
-          <p></p>
+          <a href="{{ route('dashboard') }}" class="simple-text logo-normal ">
+          <x-application-logo style="width: 40px; fill:white"/> 
           </a>
         </div>
         <ul class="nav">
@@ -114,7 +115,6 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="javascript:void(0)">CRM DashBoard</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -574,6 +574,47 @@
     @endif
 
         {{-- Modal For Task Reminder End --}}
+
+        {{-- Modal For End Task Reminder Start --}}
+
+        @php
+        $tasks = \App\Models\Task::where('reminder_sent','task_end')->get();
+      @endphp
+
+        @if($tasks->isNotEmpty())
+      @foreach ($tasks as $task )
+
+      <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog my-0 ">
+          <div class="modal-content p-3">
+            <div class="modal-header d-flex justify-content-center">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Task End Reminder</h1>
+            </div>
+            <div class="modal-body ">
+              <h4 class="text-dark">Did You Finish The Task?</h4>
+              <hr>
+              <p>Task Subject: <b>{{ $task->subject }}</b></p>
+              <p>Task Related To : <b> {{ $task->related_to }} </b></p>
+              <p>Task Owner :  <b> {{ $task->task_owner }} </b> 
+ 
+              <div class="row">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <img src="{{ asset('assets/img/task.jpg') }}" alt="" style="width: 200px">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+              <a href="{{ route('task.reminder.remeaning',$task) }}" class="btn btn-warning">No Its Remeaning</a>
+              <a href="{{ route('task.reminder.complete',$task) }}" class="btn btn-warning">Yes Mark As Complete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      @endforeach
+
+    @endif
+
+        {{-- Modal For End Task Reminder End --}}
 
       {{-- {{ Content }} --}}
       @yield('content')

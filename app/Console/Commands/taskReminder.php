@@ -2,12 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\TaskReminderMail;
 use App\Models\Task;
 use App\Models\User;
 use App\Notifications\taskNotification;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 class taskReminder extends Command
@@ -31,7 +33,7 @@ class taskReminder extends Command
      */
     public function handle()
     {
-        $tasks = Task::where('reminder','true')->where('reminder_sent','!=','sent')->get();
+        $tasks = Task::where('reminder','true')->where('reminder_sent','false')->get();
 
         foreach($tasks as $task){
             $user = User::all();
@@ -49,6 +51,7 @@ class taskReminder extends Command
                 ]);
                 $message = "Task Reminder";
                 Notification::send($user, new taskNotification($task,$message));
+                Mail::to($task->user->email)->send(new TaskReminderMail($task));
                 Log::info('Reminder Sent : '. $task);
             }
         }

@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Lead;
 use App\Models\Task;
 use App\Notifications\taskNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -26,8 +27,12 @@ class TaskController extends Controller
             return redirect()->route('task.index');
         }
 
-        $tasks = Task::all();
-       return view('tasks.index',compact('tasks'));
+        $search = $request->search;
+        $tasks = Task::when($search, function($query) use ($search){
+            $query->where('subject','LIKE','%'.$search.'%')
+            ->orWhere('related_to','LIKE','%'.$search.'%');
+        })->get();
+       return view('tasks.index',compact('tasks','search'));
     }
 
     
@@ -65,6 +70,7 @@ class TaskController extends Controller
             'description' => $request->description,
             'reminder' => $request->reminder ? 'true' : 'false',
             'reminder_time' => $request->reminder ? $request->reminder_time : NULL ,
+            'creator_id' => Auth::user()->id,
         ]); 
 
         if($task){
@@ -126,6 +132,7 @@ class TaskController extends Controller
             'description' => $request->description,
             'reminder' => $request->reminder ? 'true' : 'false',
             'reminder_time' => $request->reminder ? $request->reminder_time : NULL ,
+            'creator_id' => Auth::user()->id,
         ]);
 
         if($updated){
@@ -203,6 +210,46 @@ class TaskController extends Controller
                 Toastr()->success("Thanks For Responding :)");
                 return redirect()->route('task.index');
             }
+        }
+    }
+
+
+    public function complete($id){
+        $task = Task::find($id);
+
+        if($task){
+           $update =  $task->update([
+               'status' => 'Completed',
+               'reminder_sent' => 'task_ended'
+           ]);
+
+           if($update){
+               Toastr()->success("Task Has Been Mark as Completed");
+               return redirect()->route('task.index');
+           }else{
+            Toastr()->error("Error Occured While Completing Task :(");
+               return redirect()->route('task.index');
+           }
+        }
+    }
+
+
+    public function remeaning($id){
+        $task = Task::find($id);
+
+        if($task){
+           $update =  $task->update([
+               'reminder_sent' => 'sent',
+               'due_date' => Carbon::parse($task->due_date)->addMinutes(10),
+           ]);
+
+           if($update){
+               Toastr()->success("Task Due Date Has Been Extended");
+               return redirect()->route('task.index');
+           } else{
+            Toastr()->error("Error Occured While Sending Reminder :(");
+               return redirect()->route('task.index');
+           }
         }
     }
     public function destroy(string $id)

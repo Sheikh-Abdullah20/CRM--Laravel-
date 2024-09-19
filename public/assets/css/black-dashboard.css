@@ -3680,7 +3680,7 @@ input[type="button"].btn-block {
   margin: 0.125rem 0 0;
   font-size: 0.875rem;
   color: #525f7f;
-  height: 8rem;
+  height: 11rem;
   overflow-y: auto;
   text-align: left;
   list-style: none;
@@ -4040,6 +4040,11 @@ input[type="button"].btn-block {
   flex-wrap: wrap;
   align-items: stretch;
   width: 100%;
+}
+
+
+option{
+  color: #042a53;
 }
 
 .input-group>.form-control,

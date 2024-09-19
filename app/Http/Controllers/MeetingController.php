@@ -30,8 +30,7 @@ class MeetingController extends Controller
         $search = $request->search;
         $meetings = Meeting::when($search, function($query) use ($search){
             $query->where('meeting_name' , 'LIKE','%'.$search.'%')
-                ->orWhere('meeting_host','LIKE','%'.$search.'%')
-                ->orWhere('meeting_status','LIKE','%'.$search.'%');
+                ->orWhere('meeting_host','LIKE','%'.$search.'%');
         })->get();
 
         // $reminder = explode('-',$meetings->meeting_reminder);

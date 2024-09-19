@@ -69,6 +69,12 @@ Route::middleware('auth')->group(function () {
         //    Task Reminder Route Start
         Route::get('task/reminder/okay/{id}',[TaskController::class, 'okay'])->name('task.reminder.okay');
         //    Task Reminder Route  End
+        
+        //   End Task Reminder Route  Start
+        Route::get('task/end/reminder/complete/{id}',[TaskController::class,'complete'])->name('task.reminder.complete');
+        Route::get('task/end/reminder/remeaning/{id}',[TaskController::class,'remeaning'])->name('task.reminder.remeaning');
+        //   End Task Reminder Route  End
+
 
         // DownloadReport Csv Route Start
         Route::get('/download/lead/csv',[leadsController::class, 'leadCsv'])->name('lead.csv');

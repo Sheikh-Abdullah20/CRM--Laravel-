@@ -168,5 +168,7 @@
                 </div>
             </div>
         </div>
+        {{ PHP_VERSION }}
+        {{ Illuminate\Foundation\Application::VERSION  }}
     </body>
 </html>

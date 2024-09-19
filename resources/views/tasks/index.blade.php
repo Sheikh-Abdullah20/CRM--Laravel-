@@ -114,7 +114,7 @@ CRM - Task
                                 <td>
                                     @if($task->status === 'Not-Started')
                                     <span class="border border-light p-1 rounded" style="font-size: 10px">
-                                        {{ subStr($task->status, 0,7,).'..' }}
+                                        {{ subStr($task->status, 0,5,).'..' }}
                                     </span>
 
                                     @elseif($task->status === 'In-Progress')
