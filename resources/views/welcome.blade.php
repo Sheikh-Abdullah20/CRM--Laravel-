@@ -55,7 +55,9 @@ CRM - Home
             flex-direction: column;
         }
     } 
-
+.li::marker{
+    content: '🔰'
+}
 
     
 </style>
@@ -86,18 +88,18 @@ CRM - Home
                     <div class="d-flex justify-content-between">
                         <div class="col-md-6">
                             <ul>
-                                <li class="mb-4">
+                                <li class="mb-4 li">
                                     <b>All-in-One CRM Functionality:</b> Our platform encompasses all essential CRM features, including contact management, lead tracking, sales forecasting, and reporting. This ensures that you have a holistic view of your customer interactions and sales pipeline.</li>
 
-                                <li class="mb-4">
+                                <li class="mb-4 li">
                                    <b> Integrated Reminder System:</b> Never miss an important deadline again! Our built-in reminder system helps you stay on top of follow-ups, appointments, and critical tasks, ensuring that you can provide timely responses to your clients.
                                 </li>
 
-                                <li class="mb-4">
+                                <li class="mb-4 li">
                                     <b>Advanced Scheduler:</b> Plan your day efficiently with our intuitive scheduling tool. You can easily manage your calendar, set up meetings, and allocate time for important tasks, all within the CRM interface.
                                 </li>
 
-                                <li class="mb-4">
+                                <li class="mb-4 li">
                                     <b>User-Friendly Interface:</b> Designed with ease of use in mind, our CRM features a clean and intuitive interface that allows you to navigate seamlessly between different functionalities.
                                 </li>
                             </ul>
@@ -105,19 +107,19 @@ CRM - Home
                         
                         <div class="col-md-6">
                             <ul>
-                                <li class="mb-4">
+                                <li class="mb-5 li">
                                     <b>Customizable Dashboards:</b> Tailor your dashboard to display the metrics that matter most to you. Get real-time insights into your sales performance, customer interactions, and more.
                                 </li>
 
-                                <li class="mb-4">
+                                <li class="mb-5 li">
                                    <b> Collaboration Tools:</b> Enhance teamwork with features that allow you to share notes, assign tasks, and collaborate on projects, making it easier for your team to work together.
                                 </li>
 
-                                <li class="mb-4">
+                                <li class="mb-5 li">
                                     <b>Mobile Access:</b> Stay connected on the go! Our mobile-friendly design lets you access your CRM from anywhere, ensuring you can manage customer relationships no matter where you are.
                                 </li>
 
-                                <li class="mb-4">
+                                <li class="mb-5 li">
 
                                     <b>Robust Security Features:</b> We prioritize your data security with advanced encryption and user permissions, giving you peace of mind that your information is safe.
                                 </li>
